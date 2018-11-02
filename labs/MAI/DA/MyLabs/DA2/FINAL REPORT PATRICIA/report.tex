@@ -1,0 +1,652 @@
+
+%% * Copyright (c) w495, 2009 
+%% *
+%% * All rights reserved.
+%% *
+%% * Redistribution and use in source and binary forms, with or without
+%% * modification, are permitted provided that the following conditions are met:
+%% *     * Redistributions of source code must retain the above copyright
+%% *       notice, this list of conditions and the following disclaimer.
+%% *     * Redistributions in binary form must reproduce the above copyright
+%% *       notice, this list of conditions and the following disclaimer in the
+%% *       documentation and/or other materials provided with the distribution.
+%% *     * Neither the name of the w495 nor the
+%% *       names of its contributors may be used to endorse or promote products
+%% *       derived from this software without specific prior written permission.
+%% *
+%% * THIS SOFTWARE IS PROVIDED BY w495 ''AS IS'' AND ANY
+%% * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+%% * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+%% * DISCLAIMED. IN NO EVENT SHALL w495 BE LIABLE FOR ANY
+%% * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+%% * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+%% * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+%% * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+%% * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+\documentclass[pdf, unicode, 12pt, a4paper,oneside,fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2B]{fontenc}
+\usepackage[english,russian]{babel}
+
+\frenchspacing
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage[table]{xcolor}  
+\usepackage{array}
+\usepackage{color}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+
+
+\newcommand{\MYhref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{csquotes}
+\DeclareQuoteStyle{russian}
+	{\guillemotleft}{\guillemotright}[0.025em]
+	{\quotedblbase}{\textquotedblleft}
+\ExecuteQuoteOptions{style=russian}
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{tabsize=2,
+	breaklines,
+	columns=fullflexible,
+	flexiblecolumns,
+	numbers=left,
+	numberstyle={\footnotesize},
+	extendedchars,
+	inputencoding=utf8}
+
+\usepackage{longtable}
+
+\def\@xobeysp{ }
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+
+\oddsidemargin=-0.4mm
+\textwidth=160mm
+\topmargin=4.6mm
+\textheight=210mm
+
+\parindent=0pt
+\parskip=3pt
+
+\definecolor{lightgray}{gray}{0.9}
+
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{gray},
+  identifierstyle=\color{black},
+  stringstyle=\color{blue},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+
+\newcommand{\CWPHeader}[1]{\addtocounter{section}{-1}\section{#1}}
+
+% Заголовок курсовой работы
+% Единственный аргумент --- ее тема
+\newcommand{\CWHeader}[1]{\section*{#1}}
+
+\newcommand{\CWProblem}[1]{\par\textbf{Задача: }#1}
+
+\begin{document}
+
+\begin{center}
+\bfseries
+
+{\Large Московский авиационный институт\\ (национальный исследовательский университет)
+
+}
+
+\vspace{48pt}
+
+{\large Факультет информационных технологий и прикладной математики
+}
+
+\vspace{36pt}
+
+
+{\large Кафедра вычислительной математики и~программирования
+
+}
+
+
+\vspace{48pt}
+
+Лабораторная работа №2 по курсу \enquote{Дискретный анализ}
+
+\end{center}
+
+\vspace{72pt}
+
+\begin{flushright}
+\begin{tabular}{rl}
+Студент: & М.\,В Спиридонов \\
+Преподаватель: & А.\,А. Кухтичев \\
+Группа: & М8О-206Б \\
+Дата: & \\	
+Оценка: & \\
+Подпись: & \\
+\end{tabular}
+\end{flushright}
+
+\vfill
+\setcounter{page}{0}
+\pagestyle{empty}
+\begin{center}
+\bfseries
+Москва, \the\year
+\end{center}
+\pagebreak
+
+\CWHeader{Лабораторная работа \textnumero 2}
+
+\CWProblem{ 
+Необходимо создать программную библиотеку, реализующую указанную структуру данных, на основе которой разработать программу-словарь. В словаре каждому ключу, представляющему из себя регистронезависимую последовательность букв английского алфавита длиной не более 256 символов, поставлен в соответствие некоторый номер, от 0 до $2^{64} - 1$. Разным словам может быть поставлен в соответствие один и тот же номер.
+
+{\bfseries Вариант дерева:} { PATRICIA.}
+
+{\bfseries Вариант ключа:} { регистронезависимая последовательность букв английского алфавита длиной не более 256 символов. }
+
+{\bfseries Вариант значения:} { числа от 0 до $2^{64} - 1$.}
+}
+\pagestyle{plain}
+\pagebreak
+
+\section{Описание}
+Нагруженное дерево (или Trie; Patricia - разновидность Trie-дерева) -- структура данных реализующая интерфейс ассоциативного массива, то есть позволяющая хранить пары \enquote{ключ--значение}. В большинстве случаев ключами выступают строки, однако в качестве ключей можно использовать любые типы данных, представимые как последовательность байт.\\ \\
+В узлах Trie хранятся односимвольные метки, а ключём, который соответствует некоему узлу является путь от корня дерева до этого узла.\\
+Корень дерева, очевидно, соответствует пустому ключу.\\ 
+
+Cжатое префиксное дерево Patricia является довольно быстрым и эффективным по памяти методом реализации словаря. Применение этой модели дерева может существенно увеличить продуктивность поиска и внесения элементов в словарь. Также есть не мало алгоритмов, которые построены на принципе дерева Patricia, например алгоритм поиска подстроки \enquote{Ахо — Корасик}.
+
+Существует 2 основных типа оптимизации нагруженного дерева:
+\begin{enumerate}
+\item Сжатое нагруженное дерево получается из обычного удалением промежуточных узлов, которые ведут к единственному не промежуточному узлу. Например, цепочка промежуточных узлов с метками a, b, c заменяется на один узел с меткой abc.
+\item Patricia нагруженное дерево получается из сжатого (или обычного) удалением промежуточных узлов, которые имеют одного ребенка.
+\end{enumerate}
+Рассмотрим основные операции, связанные с префиксным деревом типа Patricia.\\
+\pagebreak
+\setcounter{subsection}{1}
+\subsubsection{Операция поиска строки в префиксном дереве.}
+Движемся от корня дерева. Если корень пустой, то поиск неудачный. Иначе, сравниваем ключ в узле с текущей строкой. Для этого воспользуемся функцией, которая вычисляет длину наибольшего общего префикса двух строк заданной длины.\\
+В случае поиска нас интересуют три случая: 
+ \begin{enumerate}
+\item общий префикс может быть пустым, тогда надо рекурсивно продолжить поиск в младшей сестре данного узла, т.е. перейти по ссылке next;
+\item общий префикс равен искомой строке x — поиск успешный, узел найден (тут мы существенно используем тот факт, что конец строки за счет наличия в нем терминального символа может быть найден только в листе дерева);
+\item общий префикс совпадает с ключом, но не совпадает с x — переходим рекурсивно по ссылке link к старшему дочернему узлу, передавая ему для поиска строку x без найденного префикса.
+\end{enumerate}
+Если общий префикс есть, но не совпадает с ключом, то поиск также является неудачным.
+\subsubsection{Операция вставки новой строки в префиксное дерево.}
+Вставка нового ключа (как и в двоичных деревьях поиска) очень похожа на поиск ключа. Естественно с несколькими отличиями. Во-первых, в случае пустого дерева нужно создать узел с заданным ключом и вернуть указатель на этот узел. Во-вторых, если длина общего префикса текущего ключа и текущей строки x больше нуля, но меньше длины ключа (второй случай недачного поиска), то надо разбить текущий узел на два, оставив в родительском узле найденный префикс, и поместив в дочерний узел p оставшуюся часть ключа. После разделения нужно продолжить процесс вставки в узле p строки x без найденного префикса.\\
+\newpage
+\subsubsection{Удаление ключа из префиксного дерева.}
+Как обычно, удаление ключа — самая сложная операция. Хотя в случае префиксного дерева все выглядит не столь страшно. Дело в том, что при удалении ключа удаляется всего один листовой узел, соответствующий суффиксу некоторому удаляемого ключа. Сначала мы находим этот узел, если поиск успешный, то мы его удаляем и возвращаем указатель на младшего брата. \\
+В принципе, на этом процесс удаления можно было бы и закончить, однако возникает небольшая проблема — после удаления узла в дереве может образоваться цепочка из двух узлов t и p, в которой у первого узла t имеется единственный дочерний узел p. Следовательно, если мы хотим держать дерево в сжатой форме, то нужно соединить эти два узла в один, произведя операцию слияния. 
+
+\newpage 
+\section{Описание программы}
+По условию задачи было ясно, что красиво такую программу написать в одном файле не получится и придется её разбить на несколько основных файлов:
+\begin{enumerate}
+\item main.cpp (содержит основной метод main, LengthString - метод подсчёт длины строки, ToLower - метод перевода строки в нижний регистр)
+\item PatriciaTree.h и PatriciaTree.cpp (описание и реализация класса TPatriciaTree)
+\item StackContainer.h и StackContainer.cpp (описание и реализация класса TStack и TStackData)
+\end{enumerate}
+Для удобства сборки проекта были написаны: 
+\begin{enumerate}
+\item makefile (для сборки и автоматического тестирования проекта из консоли)
+\item CMakeLists.txt (для автоматической сборки проекта в CLion, Visual Studio Code, Visual Studio Enterprise 2017)
+\end{enumerate}
+Также были взяты \enquote{test\_generator.py} и \enquote{wrapper.sh} c GitHub'а[1] и переделаны.
+\newpage
+
+\begin{longtable}{|p{8.4cm}|p{7.5cm}|}
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {main.cpp}\\
+\hline
+void ToLower (char *t, int len)& Перевод char* в нижний регистр.\\
+\hline
+\hline
+unsigned int LengthString (const char *string)& Подсчет строки.\\
+\hline
+\hline
+int main (int argc, char **argv)&Точка входа в программу.\\
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {TPatriciaTree.h и TPatriciaTree.cpp}\\
+\hline TPatriciaTree ()&Пустой конструктор.\\ \hline
+\hline const unsigned long long *Search (const char *, unsigned int)&Поиск в дереве.\\ \hline
+\hline bool Insert (const char *, unsigned int, unsigned long long)&Вставка в дерево.\\ \hline
+\hline bool Remove (const char *, unsigned int)&Удаление из дерева.\\ \hline
+\hline void Load (const char *)&Загрузка дерева из файла.\\ \hline
+\hline void Save (const char *)&Сохранение дерева в файл.\\ \hline
+\hline virtual \textasciitilde TPatriciaTree ()&Деструктор.\\ \hline
+\hline TPatriciaTree *next&Ссылка на брата.\\ \hline
+\hline TPatriciaTree *link&Ссылка на потомка.\\ \hline
+\hline char *key&Поле ключа.\\ \hline
+\hline unsigned int length&Длина ключа.\\ \hline
+\hline unsigned long long data&Поле значения.\\ \hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {StackContainer.h и StackContainer.hpp}\\
+\hline TStackData () &Пустой конструктор.\\ \hline
+\hline T \&GetData ()&Получение внутреннего значения.\\ \hline
+\hline TStackData <T> *GetNext&Получить следующий элемент стека.\\ \hline
+\hline TStackData <T> *GetPrev ()&Получить предыдущий элемент стека.\\ \hline
+\hline virtual \textasciitilde TStackData ()&Деструктор элемента стека.\\ \hline
+\hline T data& Значение внутри элемента стека.\\ \hline
+\hline TStackData <T> *next&Ссылка на следующий элемент стека.\\ \hline
+\hline TStackData <T> *prev&Ссылка на предыдущий элемент стека.\\ \hline
+\hline TStack ()&Конструктор стека.\\ \hline
+\hline T *Top ()&Получения верхнего элемента стека.\\ \hline
+\hline void Pop ()&Метод удаление верхнего элемента .\\ \hline
+\hline void Push (T \&)& Вставка элемента в стек.\\ \hline
+\hline bool Empty ()&Проверка пуст ли стек.\\ \hline
+\hline virtual \textasciitilde TStack ()& Деструктор.\\ \hline
+\hline TStackData <T> *head& Поле головы стека.\\ \hline
+\end{longtable}
+
+\newpage
+\section{Код дополнительных файлов}
+\lstset{language=BASH}
+\begin{itemize}
+\item makefile
+\begin{lstlisting}
+FLAGS=-g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2
+CC=g++
+LINK=-lm
+
+all: tree main
+
+main: main.cpp
+	$(CC) $(FLAGS) -c main.cpp
+	$(CC) $(FLAGS) -o Patricia PatriciaTree.o main.o $(LINK)
+
+maind: main.cpp
+	$(CC) $(FLAGSD) -c main.cpp
+	$(CC) $(FLAGSD) -o Patricia PatriciaTree.o main.o $(LINK)
+
+mainp: main.cpp
+	$(CC) $(FLAGS) -c main.cpp
+	$(CC) $(FLAGS) -ftest-coverage -fprofile-arcs -o Patricia PatriciaTree.o main.o $(LINK)
+
+tree: PatriciaTree.cpp
+	$(CC) $(FLAGS) -c PatriciaTree.cpp
+
+clear:
+	rm -f *.o
+	rm -fr *.dSYM
+
+runtests:
+	rm -rf tests
+	mkdir tests
+	sh wrapper.sh
+\end{lstlisting}
+\newpage
+\item test\_generator.py
+\lstset{language=Python}
+\begin{lstlisting}
+# -*- coding: utf-8 -*-
+import sys
+import random
+import string
+import copy
+from random import choice
+from string import ascii_uppercase
+def get_random_key():
+    return ''.join(choice(ascii_uppercase) for i in range(random.randint(1, 256)))
+
+if __name__ == "__main__":
+    count_of_tests = 1
+    actions = [ "+", "-", "?", "!"]
+    acts_file = ["Load test", "Save test"]
+    for enum in range( count_of_tests ):
+        keys = {}
+        save_file = {}
+        test_file_name = "tests/{:02d}".format( enum + 1 )
+        with open( "{0}.t".format( test_file_name ), 'w' ) as output_file, \
+             open( "{0}.a".format( test_file_name ), "w" ) as answer_file:
+
+            for _ in range( random.randint(1000, 1000) ):
+                action = random.choice( actions )
+                if action == "+":
+                    key = get_random_key()
+                    value = random.randint( 1, 50)
+                    output_file.write("+ {0} {1}\n".format( key, value ))
+                    key = key.lower()
+                    answer = "Exist"
+                    if key not in keys:
+                        answer = "OK"
+                        keys[key] = value
+                    answer_file.write( "{0}\n".format( answer ) )
+
+                elif action == "?":
+                    search_exist_element = random.choice( [ True, False ] )
+                    key = random.choice( [ key for key in keys.keys() ] ) if search_exist_element and len( keys.keys() ) > 0 else get_random_key()
+                    output_file.write( "{0}\n".format( key ) )
+                    key = key.lower()
+                    if key in keys:
+                        answer = "OK: {0}".format( keys[key] )
+                    else:
+                        answer = "NoSuchWord"
+                    answer_file.write( "{0}\n".format( answer ) ) 
+                    
+                elif action == "-":
+                    key = get_random_key()
+                    output_file.write("- {0}\n".format(key))
+                    key = key.lower()
+                    answer = "NoSuchWord"
+                    if key in keys:
+                        del keys[key]
+                        answer = "OK"
+                    answer_file.write("{0}\n".format( answer ) )
+                
+                elif action == "!":
+                    act_file = random.choice(acts_file)
+                    if act_file == "Save test":
+                        output_file.write("{0} {1}\n".format( action, act_file ))
+                        save_file = keys.copy()
+                        answer = "OK"
+                    elif act_file == "Load test":
+                        output_file.write("{0} {1}\n".format( action, act_file ))
+                        keys = {}
+                        keys = save_file.copy()
+                        answer = "OK"
+                    answer_file.write( "{0}\n".format( answer ) )
+                        
+\end{lstlisting}
+\newpage
+\item benchmark.cpp
+\lstset{language=C}
+\begin{lstlisting}
+#include <cstdio>
+#include <string.h>
+#include <map>
+#include <fstream>
+#include <iostream>
+
+void LowerString(std::string &);
+void Parsing(char &, std::string &, unsigned long long &);
+
+
+int main() {
+    std::ofstream fout("benchTime");
+    std::map<std::string, unsigned long long> map;
+    std::string buffer;
+    char action;
+    unsigned long long value;
+    clock_t start = clock();
+    while(true) {
+        Parsing(action, buffer, value);
+        if(action == 'E') {
+            break;
+        }
+        switch(action) {
+            case '+':
+                if(map.count(buffer) == 0) {
+                    map[buffer] = value;
+                    printf("OK\n");
+                } else {
+                    printf("Exist\n");
+                }
+                break;
+            case '-':
+                if (map[buffer] == 0) {
+                    printf("NoSuchWord\n");
+                }
+                else {
+                    map.erase(buffer);
+                    printf("OK\n");
+                }
+                break;
+            case 'F':
+                if (map[buffer] == 0) {
+                    printf("NoSuchWord\n");
+                }
+                else {
+                    printf("OK: %lu\n", map[buffer]);
+                }
+                break;
+        }
+    }
+    clock_t finish = clock();
+    double time = (double) (finish - start)/ CLOCKS_PER_SEC;
+    fout << "Std map time:" << time << std::endl;
+    fout.close();
+    return 0;
+}
+
+void LowerString(std::string& buffer) {
+    int index = 0;
+    while (index < buffer.size()) {
+        if (buffer[index] >= 'A' && buffer[index] <= 'Z') {
+            buffer[index] += -'A' + 'a';
+        }
+        index++;
+    }
+}
+
+void Parsing(char &action, std::string& buffer, unsigned long long &value) {
+    char ch;
+    size_t i = 0;
+    ch = getchar();
+    if (ch == EOF) {
+        action = 'E';
+        return;
+    }
+    if (ch == '+') {
+        action = ch;
+        getchar();
+        std::cin >> buffer >>value;
+        getchar();
+        LowerString(buffer);
+    } else if (ch == '-') {
+        action = ch;
+        getchar();
+        std::cin >> buffer;
+        getchar();
+        LowerString(buffer);
+    } else if (ch == '!') {
+        getchar();
+        action = getchar();
+        while((ch = getchar()) != ' ') {
+            i++;
+        }
+        scanf("%s", buffer);
+        getchar();
+    } else {
+        action = 'F';
+        buffer[i++] = ch;
+        while((ch = getchar()) != '\n') {
+            buffer[i++] = ch;
+        }
+        buffer[i] = '\0';
+        LowerString(buffer);
+    }
+}
+\end{lstlisting}
+\newpage
+\item wrapper.sh
+\lstset{language=BASH}
+\begin{lstlisting}
+#!/bin/bash
+make
+make clear
+rm -rf tests
+mkdir -p tests
+if ! python3 test_generator.py ; then
+   echo "ERROR: Failed to python generate tests."
+   exit 1
+fi
+
+for test_file in `ls tests/*.t`; do
+    echo "Execute ${test_file}"
+    if ! ./Patricia < $test_file > tmp ; then
+        echo "ERROR"
+        continue
+    fi
+    answer_file="${test_file%.*}"
+
+    if ! diff -u "${answer_file}.a" tmp ; then
+        echo "Failed"
+    else
+        echo "OK"
+    fi 
+done
+\end{lstlisting}
+\end{itemize}
+\newpage
+\section{Консоль}
+\lstset{language=Bash}
+\begin{alltt}
+$ make
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2 
+-c PatriciaTree.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2 
+-c main.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2 
+-o Patricia PatriciaTree.o main.o -lm
+$ ./Patricia
+g   
+NoSuchWord
++ g 4
+OK
++ kij 6
+OK
++ de 2
+OK
+de
+OK: 2
+- de
+OK
++ lp 6
+OK
+! Save test
+OK
+- g
+OK
+- kij
+OK
+kij
+NoSuchWord
+! Load test
+OK
+kij 
+OK: 6
+- e
+NoSuchWord
++ ws 2
+OK
+\end{alltt}
+\newpage
+\section{Проверка на утечки памяти }
+Тестирование проводилось на файле в 10 000 строк, на системе Arch Linux, с помощью утилиты Valgrind.
+
+\begin{alltt}
+$ valgrind ./Patricia < tests/01.t > tmp
+==16246== Memcheck, a memory error detector
+==16246== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==16246== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==16246== Command: ./Patricia
+==16246== 
+==16246== 
+==16246== HEAP SUMMARY:
+==16246==     in use at exit: 0 bytes in 0 blocks
+==16246==   total heap usage: 3,362,528 allocs, 3,362,528 frees, 235,824,982 bytes allocated
+==16246== 
+==16246== All heap blocks were freed -- no leaks are possible
+==16246== 
+==16246== For counts of detected and suppressed errors, rerun with: -v
+==16246== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+$ wc tests/01.t
+  10000   22476 1016277 tests/01.t
+\end{alltt}
+\pagebreak
+
+\section{Тест производительности}
+Чтобы замерить скорость выполнения программы, в main были добавлены следующие строчки, для замера времени начала и конца выполнения.
+\lstset{language=C}
+\begin{lstlisting}
+...
+clock_t start = clock();
+...
+clock_t end = clock();
+    double time = (double)(end-start)/CLOCKS_PER_SEC;
+    std::ofstream file("time");
+    file << "Time : " << time << std::endl;
+    file.close();
+\end{lstlisting}
+\begin{alltt}
+$ ./Patricia < tests/01.t > tmp
+$ cat time
+Time : 0.004019
+$ ./Patricia < tests/02.t > tmp
+$ cat time
+Time : 0.07181
+$ ./Patricia < tests/03.t > tmp
+$ cat time
+Time : 0.149677
+$ wc tests/01.t
+  492   954 65297 tests/01.t
+$ wc tests/02.t 
+  25154   50598 3303285 tests/02.t
+$ wc tests/03.t 
+  49993   99693 6573363 tests/03.t
+$ g++ -g -std=c++11 benchmark.cpp
+$ ./a.out < tests/01.t > tmp
+$ cat benchTime 
+Std map time: 0.008452
+$ ./a.out < tests/02.t > tmp
+$ cat benchTime 
+Std map time: 0.103763
+$ ./a.out < tests/03.t > tmp
+$ cat benchTime 
+Std map time:0.355689
+\end{alltt}
+\pagebreak
+
+\section{Выводы}
+В целом написание дерева не вызвало никаких трудностей и я был приятно удивлен, что Patricia быстрее, чем std::map.\\
+Для себя я взялся за написание реализации Patricia и на нескольких других языках, потому что часто имею дело со словарями.
+\pagebreak
+\begin{thebibliography}{99}
+\bibitem{github_t}
+{\itshape GitHub одного из семинаристов.} \\URL: \texttt{https://github.com/toshunster/da}. 
+\bibitem{wikipedia_sort}
+{\itshape Шаблоны функций в С++.} \\URL: \texttt{http://cppstudio.com/post/5165/}. 
+\bibitem{wikipedia_sort}
+{\itshape Шаблоны функций в С++.} \\URL: \texttt{http://cppstudio.com/post/673/}. 
+\bibitem{Kormen}
+Томас\,Х.\,Кормен, Чарльз\,И.\,Лейзерсон, Рональд\,Л.\,Ривест, Клиффорд\,Штайн.
+{\itshape Алгоритмы: построение и анализ, 2-е издание.} --- Издательский дом \enquote{Вильямс}, 2007. Перевод с английского: И.\,В.\,Красиков, Н.\,А.\,Орехова, В.\,Н.\,Романов. --- 1296 с. (ISBN 5-8459-0857-4 (рус.))
+\end{thebibliography}
+\end{document}

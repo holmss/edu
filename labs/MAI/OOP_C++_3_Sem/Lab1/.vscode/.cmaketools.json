@@ -1,0 +1,62 @@
+{
+  "variant": {
+    "label": "Release",
+    "keywordSettings": {
+      "buildType": "release"
+    },
+    "description": "Enable optimizations, omit debug info"
+  },
+  "activeEnvironments": [],
+  "codeModel": {
+    "configurations": [
+      {
+        "name": "Release",
+        "projects": [
+          {
+            "buildDirectory": "/Users/maxsp/Projects/oop/Lab1/build",
+            "name": "prog",
+            "sourceDirectory": "/Users/maxsp/Projects/oop/Lab1",
+            "targets": [
+              {
+                "artifacts": [
+                  "/Users/maxsp/Projects/oop/Lab1/build/prog"
+                ],
+                "buildDirectory": "/Users/maxsp/Projects/oop/Lab1/build",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-O3 -DNDEBUG   -Wall -O2 -std=gnu++11",
+                    "includePath": [
+                      {
+                        "path": "/Users/maxsp/Projects/oop/Lab1/build"
+                      },
+                      {
+                        "path": "/Users/maxsp/Projects/oop/Lab1"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "main.cpp",
+                      "rectangle.cpp",
+                      "square.cpp",
+                      "triangle.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "prog",
+                "linkLanguageFlags": "-O3 -DNDEBUG",
+                "linkerLanguage": "CXX",
+                "name": "prog",
+                "sourceDirectory": "/Users/maxsp/Projects/oop/Lab1",
+                "type": "EXECUTABLE"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cookie": "0.6993984537652931",
+    "inReplyTo": "codemodel",
+    "type": "reply"
+  }
+}

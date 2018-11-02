@@ -1,0 +1,680 @@
+
+%% * Copyright (c) w495, 2009 
+%% *
+%% * All rights reserved.
+%% *
+%% * Redistribution and use in source and binary forms, with or without
+%% * modification, are permitted provided that the following conditions are met:
+%% *     * Redistributions of source code must retain the above copyright
+%% *       notice, this list of conditions and the following disclaimer.
+%% *     * Redistributions in binary form must reproduce the above copyright
+%% *       notice, this list of conditions and the following disclaimer in the
+%% *       documentation and/or other materials provided with the distribution.
+%% *     * Neither the name of the w495 nor the
+%% *       names of its contributors may be used to endorse or promote products
+%% *       derived from this software without specific prior written permission.
+%% *
+%% * THIS SOFTWARE IS PROVIDED BY w495 ''AS IS'' AND ANY
+%% * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+%% * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+%% * DISCLAIMED. IN NO EVENT SHALL w495 BE LIABLE FOR ANY
+%% * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+%% * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+%% * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+%% * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+%% * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+\documentclass[pdf, unicode, 12pt, a4paper,oneside,fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2B]{fontenc}
+\usepackage[english,russian]{babel}
+
+\frenchspacing
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage[table]{xcolor}  
+\usepackage{array}
+\usepackage{color}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+
+
+\newcommand{\MYhref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{csquotes}
+\DeclareQuoteStyle{russian}
+	{\guillemotleft}{\guillemotright}[0.025em]
+	{\quotedblbase}{\textquotedblleft}
+\ExecuteQuoteOptions{style=russian}
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{tabsize=2,
+	breaklines,
+	columns=fullflexible,
+	flexiblecolumns,
+	numbers=left,
+	numberstyle={\footnotesize},
+	extendedchars,
+	inputencoding=utf8}
+
+\usepackage{longtable}
+
+\def\@xobeysp{ }
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+
+\oddsidemargin=-0.4mm
+\textwidth=160mm
+\topmargin=4.6mm
+\textheight=210mm
+
+\parindent=0pt
+\parskip=3pt
+
+\definecolor{lightgray}{gray}{0.9}
+
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{gray},
+  identifierstyle=\color{black},
+  stringstyle=\color{blue},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+
+\newcommand{\CWPHeader}[1]{\addtocounter{section}{-1}\section{#1}}
+
+% Заголовок курсовой работы
+% Единственный аргумент --- ее тема
+\newcommand{\CWHeader}[1]{\section*{#1}}
+
+\newcommand{\CWProblem}[1]{\par\textbf{Задача: }#1}
+
+\begin{document}
+
+\begin{center}
+\bfseries
+
+{\Large Московский авиационный институт\\ (национальный исследовательский университет)
+
+}
+
+\vspace{48pt}
+
+{\large Факультет информационных технологий и прикладной математики
+}
+
+\vspace{36pt}
+
+
+{\large Кафедра вычислительной математики и~программирования
+
+}
+
+
+\vspace{48pt}
+
+Лабораторная работа №1 по курсу \enquote{Дискретный анализ}
+
+\end{center}
+
+\vspace{72pt}
+
+\begin{flushright}
+\begin{tabular}{rl}
+Студент: & М.\,В Спиридонов \\
+Преподаватель: & А.\,А. Кухтичев \\
+Группа: & М8О-206Б \\
+Дата: & \\
+Оценка: & \\
+Подпись: & \\
+\end{tabular}
+\end{flushright}
+
+\vfill
+\pagestyle{empty}
+\begin{center}
+\bfseries
+Москва, \the\year
+\end{center}
+\pagebreak
+
+\CWHeader{Лабораторная работа \textnumero 1}
+
+\CWProblem{ 
+Требуется разработать программу, осуществляющую ввод пар \enquote{ключ-значение}, их 
+упорядочивание по возрастанию ключа указанным алгоритмом сортировки за линейное время и вывод отсортированной последовательности.
+
+{\bfseries Вариант сортировки:} { Сортировка подсчётом.}
+
+{\bfseries Вариант ключа:} {  Числа от 0 до 65535. }
+
+{\bfseries Вариант значения:} {  Сортировка подсчётом по целочисленному ключу (числа от 0 до 65535).
+В качестве значения используются строки переменной длины (до 2048 символов)}
+}
+\pagestyle{plain}
+\pagebreak
+
+\section{Описание}
+Условие задачи подразумевает хранение строк, но использовать STL было запрещено и пришлось написать свой класс TString, который реализует все необходимые функции от строки (сравнение, копирование и присваивание). По сути была написана лишь красивая обёртка над char*.\newline
+Также нужно было как-то хранить пары \textit{\enquote{ключ-значение}}, поэтому был реализован свой класс TPair, который содержит два публичных поля: Key(int), Value(TString).\newline
+Из основных элементов не хватало только динамического массива, поэтому был реализован свой TVector, который позволяет динамически добавлять элементы TPair и производить манипуляции с ними. \newline
+Все основные типы данных есть, осталась сортировка подсчётом и ввод данных.\newline
+Есть смысл сказать о методе ввода значений. Был создан буфер char* в 2048 символов, куда при помощи scanf("\%s") считывалась строка до EOF, и позднее заносилась в TPair, который в свою очередь попадал в TVector.\newline
+Сортировка подсчётом имеет алгоритмическую сложность $O(n+k)$. \newline Применима в случае, если сортируемые числа имеют (или их можно отобразить в) диапазон возможных значений, который достаточно мал по сравнению с сортируемым множеством. \newline 
+Суть сортировки заключается в нахождении максимального ключа среди всех входных и создании дополнительного целочисленного массива, где будет подсчитано сколько каких ключей встречено. Далее в зависимости от значения ключа, в результирующий массив будут расставлены все исходные пары.\newline
+Я использовал стабильную версию сортировки для структур, рассмотренной на лекции. 
+\pagebreak
+
+\section{Описание программы}
+По условию задачи было ясно, что красиво такую программу написать в одном файле не получится и придется её разбить на несколько основных файлов:
+\begin{enumerate}
+\item main.cpp (содержит основной метод main, метод вывода TVector'а - Print)
+\item Model.h и Model.cpp (описание и реализация класса TPair)
+\item TString.h и TString.cpp (описание и реализация класса TString)
+\item TVector.h и TVector.cpp (описание и реализация класса TVector)
+\end{enumerate}
+Для удобства сборки проекта были написаны: 
+\begin{enumerate}
+\item makefile (для сборки и автоматического тестирования проекта из консоли)
+\item CMakeLists.txt (для автоматической сборки проекта в CLion, Visual Studio Code, Visual Studio 17)
+\end{enumerate}
+Также были взяты "test\_generator.py" и "wrapper.sh" c GitHub'а[1] и переделаны.
+\newpage
+\begin{longtable}{|p{8.4cm}|p{7.5cm}|}
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {main.cpp}\\
+\hline
+void Print (TVector \&inp)&Метод для вывода вектора\\
+\hline
+\hline
+int main (int argc, char **argv)&Точка входа в программу\\
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {Model.h (описание методов/полей)}\\
+\hline
+TPair ()&Пустой конструктор\\
+TPair (const TPair \&that)&Конструктор копирования\\
+TPair (int key, TString value)&Конструктор создания с параметрами\\
+\hline
+\hline
+TPair \&operator = (const TPair \&that)&Оператор присваивания\\
+\hline
+\hline \textasciitilde TPair ()&Деструктор\\ \hline
+\hline int Key&Поле ключа\\ \hline
+\hline
+TString Value&Поле значения\\
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {TString.h (описание методов/полей)}\\
+\hline
+TString (const char *string = "")&Конструктор создания из char*\\
+TString (TString const \&string)&Конструктор корпирования\\
+\hline
+\hline
+TString \&operator = (const TString \&string)&Оператор присваивания\\
+TString \&operator = (const char *string)&Оператор присваивания\\
+\hline
+\hline bool operator == (const TString \&string) const&Оператор сравнения\\ \hline
+\hline char \&operator [] (int) const&Оператор обращения по индексу\\ \hline
+\hline char \&operator [] (int)&Оператор обращения по индексу\\ \hline
+\hline const size\_t Length () const&Метод, который возвращает длину строки \\ \hline
+\hline char *GetCharArray ()&Метод получения внутреннего char*\\ \hline
+\hline  char *GetCharArray () const&Метод получения внутреннего char*\\ \hline
+\hline \textasciitilde TString()&Деструктор \\ \hline
+\hline static int const SIZE\_DIFFERENCE = 1&Приватная константа \\ \hline
+\hline char *privateString&Приватное поле типа char*\\ \hline
+\hline static int const DEFAULT\_INT\_VALUE = 0&Приватная константа\\ \hline
+\end{longtable}
+\newpage
+\begin{longtable}{|p{8.4cm}|p{7.52cm}|}
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {TVector.h (описание методов/полей)}\\
+\hline 
+TVector ()&Пустой конструктор\\
+TVector (const TVector\&inp)&Конструктор копирования\\
+TVector (const int n)&Конструктор создания\\
+\hline
+\hline
+void FastPushBack (TPair \&data)&Метод добавления элемента\\
+\hline
+\hline
+void Clear ()&Метод опустошения вектора\\
+\hline
+\hline
+int Size () const&Метод, который возвращает размер вектора\\
+\hline
+\hline
+int Capacity () const&Метод, который возвращает реальное количество элементов в векторе\\
+\hline
+\hline
+void CountingSort()&Метод сортировки подсчётом\\
+\hline
+\hline
+\textasciitilde TVector ()&Деструктор\\
+\hline
+\hline
+TPair *privateArray&Приватное поле вектора\\
+\hline
+\hline
+int privateArraySize&Приватное поле размера вектора\\
+\hline
+\hline
+int privateArrayOccupiedSize&Приватное поле, которое содержит количество реально занятых ячеек вектора\\
+\hline
+\hline
+static int const SIZE\_DIFFERENCE = 1&Приватная константа\\
+\hline
+\hline
+static int const DEFAULT\_INT\_VALUE = 0&Поле значения\\
+\hline
+\end{longtable}
+\newpage
+\section{Код программы}
+Метод сортировки подсчётом
+\begin{lstlisting}
+void TVector::CountingSort () {
+
+    //clock_t start = clock();
+    int max = 0;
+    for (int i = 0; i < privateArrayOccupiedSize; i++) {
+        if (privateArray[i].Key > max) {
+            max = (privateArray)[i].Key;
+        }
+    }
+    TPair *res = new TPair[privateArrayOccupiedSize];
+
+    int *countMass = new int[max + 1]{0};
+    for (int i = 0; i < privateArrayOccupiedSize; ++i) {
+        countMass[privateArray[i].Key]++;
+    }
+
+    for (int i = 1; i <= max; ++i) {
+        countMass[i] = countMass[i] + countMass[i - 1];
+    }
+
+    for (int i = privateArrayOccupiedSize - 1; i >= 0; i--) {
+        int tmp = countMass[privateArray[i].Key] - 1;
+        res[tmp] = privateArray[i];
+        countMass[privateArray[i].Key] = countMass[privateArray[i].Key] - 1;
+    }
+    for (int i = 0; i < privateArrayOccupiedSize; ++i) {
+        privateArray[i] = res[i];
+    }
+    delete[] countMass;
+    delete[] res;
+
+    //clock_t end = clock();
+    //printf("\nCounter SortTime = %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+}
+\end{lstlisting}
+
+\newpage
+\section{Код дополнительных файлов}
+\lstset{language=BASH}
+\begin{itemize}
+\item makefile
+\begin{lstlisting}
+FLAGS=-g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2
+CC=g++
+
+all: string model vector main
+
+main: main.cpp
+	$(CC) $(FLAGS) -c main.cpp
+	$(CC) $(FLAGS) -o CounterSort TString.o Model.o TVector.o main.o -lm
+
+vector: TVector.cpp
+	$(CC) $(FLAGS) -c TVector.cpp
+
+string: TString.cpp
+	$(CC) $(FLAGS) -c TString.cpp
+
+model: Model.cpp
+	$(CC) $(FLAGS) -c Model.cpp
+	
+clear:
+	rm -f *.o
+	rm -fr *.dSYM
+
+runtests:
+	rm -rf tests
+	mkdir tests
+	sh wrapper.sh
+
+bench: benchmark.cpp
+	$(CC) $(FLAGS) -c benchmark.cpp
+	$(CC) $(FLAGS) -o benchmark benchmark.o -lm	
+\end{lstlisting}
+\item test\_generator.py
+\lstset{language=Python}
+\begin{lstlisting}
+import random
+import string
+
+MAX_KEY_VALUE = 65535
+MAX_VALUE_LEN = 500
+
+def generate_random_value():
+    return "".join([random.choice(string.ascii_lowercase) 
+    	for _ in range(1, MAX_VALUE_LEN)])
+
+if __name__ == "__main__":
+    for num in range(1, 21):
+        values = list()
+        output_filename = "tests/{:02d}.t".format(num)
+        with open(output_filename, 'w') as output:
+            for _ in range(0, random.randint(10, 100)):
+                key = random.randint(0, MAX_KEY_VALUE)
+                value = generate_random_value()
+                values.append((key, value))
+                output.write("{}\t{}\n".format(key, value))
+        # Answer.
+        # values[0][0] -- key
+        # values[0][1] -- value
+        output_filename = "tests/{:02d}.a".format(num)
+        with open(output_filename, 'w') as output:
+            values = sorted(values, key=lambda x: x[0])
+            for value in values:
+                output.write("{}\t{}\n".format(value[0], value[1]))
+\end{lstlisting}
+\item benchmark.cpp
+\lstset{language=C}
+\begin{lstlisting}
+#include <algorithm>
+#include <cassert>
+#include <ctime>
+#include <iostream>
+#include <vector>
+
+bool CheckOrder (const std::vector <std::pair <int, std::string> > &data) {
+    for (size_t idx = 1; idx < data.size(); ++idx) {
+        if (data[idx - 1].first > data[idx].first) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool PairComparer (const std::pair <int, std::string> &a, std::pair <int, std::string> &b) {
+    return a.first < b.first;
+}
+void CountingSort (std::vector <std::pair <int, std::string> >&inp) {
+    int size = inp.capacity();
+    int max = 0;
+    for (int i = 0; i < size; i++) {
+        if (inp[i].first > max) {
+            max = inp[i].first;
+        }
+    }
+    std::vector <std::pair <int, std::string> >res(size);
+    int *countMass = new int[max + 1];
+    for (int i = 0; i < max + 1; ++i) {
+        countMass[i] = 0;
+    }
+    for (int i = 0; i < size; ++i) {
+        countMass[inp[i].first]++;
+    }
+
+    for (int i = 1; i <= max; ++i) {
+        countMass[i] = countMass[i] + countMass[i - 1];
+    }
+
+    for (int i = size - 1; i >= 0; i--) {
+        int tmp = countMass[(inp)[i].first] - 1;
+        res[tmp] = inp[i];
+        countMass[inp[i].first] = countMass[inp[i].first] - 1;
+    }
+    for (int i = 0; i < size; ++i) {
+        inp[i] = res[i];
+    }
+    delete[] countMass;
+}
+void StdSort (std::vector <std::pair <int, std::string> > &data) {
+    std::sort(data.begin(), data.end(), PairComparer);
+}
+
+void RunStdSort (std::vector <std::pair <int, std::string> > &data) {
+    clock_t start = clock();
+    StdSort(data);
+    clock_t end = clock();
+    assert(CheckOrder(data) == true);
+    double time = (double)(end - start);
+    printf("\nStd SortTime = %lf\n",time/CLOCKS_PER_SEC);
+}
+void RunCountingSort (std::vector <std::pair <int, std::string> > &data) {
+    clock_t start = clock();
+    CountingSort(data);
+    clock_t end = clock();
+    assert(CheckOrder(data) == true);
+    double time = (double)(end - start);
+    printf("\nCounting SortTime = %lf\n",time/CLOCKS_PER_SEC);
+}
+
+int main (int argc, const char *argv[]) {
+    std::vector <std::pair <int, std::string> > data;
+    int tempInt = 0;
+    char *bufStr = new char[2048];
+    std::pair <int, std::string> pair;
+    while (scanf("%d", &tempInt) != EOF) {
+        scanf("%s", bufStr);
+        pair.first = tempInt;
+        pair.second = bufStr;
+
+        data.push_back(pair);
+    }
+    delete[] bufStr;
+    std::vector <std::pair <int, std::string> > dataCopy(data);
+    RunStdSort(data);
+    RunCountingSort(data);
+    return 0;
+}
+
+\end{lstlisting}
+
+\end{itemize}
+\newpage
+\section{Консоль}
+\lstset{language=Bash}
+\begin{alltt}
+$ CounterSort make
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c TString.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c Model.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c TVector.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c main.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -o CounterSort TString.o Model.o TVector.o main.o -lm
+\end{alltt}
+\lstset{language=BASH}
+\begin{alltt}
+$ CounterSort cat 01.t
+60693	nmbfyzfqu
+43600	piqyjgkhf
+25976	irudfyioj
+3679	duqjersbu
+38028	wuxtiiogk
+3639	mefjaasbe
+3915	loxlyyqcs
+42023	sslttackw
+58339	zoxkqedkb
+$ CounterSort ./CounterSort < 01.t > 01.answ
+$ CounterSort cat 01.answ
+3639	mefjaasbe
+3679	duqjersbu
+3915	loxlyyqcs
+25976	irudfyioj
+38028	wuxtiiogk
+42023	sslttackw
+43600	piqyjgkhf
+58339	zoxkqedkb
+60693	nmbfyzfqu
+$ CounterSort cat 02.t
+14517	tyxzddarc
+64044	xelwhtsro
+39337	kwktcfiiu
+9162	qjevarqqs
+64981	mrwlghlcs
+9480	vagjwzilk
+44021	egaeqezha
+41017	xpcfbjuly
+51997	jyjntrrgf
+41622	pkabowgux
+44235	yborezsfg
+$ CounterSort ./CounterSort < 02.t > 02.answ
+$ CounterSort cat 02.answ
+9162	qjevarqqs
+9480	vagjwzilk
+14517	tyxzddarc
+39337	kwktcfiiu
+41017	xpcfbjuly
+41622	pkabowgux
+44021	egaeqezha
+44235	yborezsfg
+51997	jyjntrrgf
+64044	xelwhtsro
+64981	mrwlghlcs
+\end{alltt}
+\newpage
+\section{Проверка на утечки памяти }
+Тестирование проводилось на файле в 100 000 строк, на системе Arch Linux, с помощью утилиты Valgrind.
+\begin{alltt}
+[Ср окт 04: 05:53] snowden@arch ~/Projects/DA/da1 [master] $ make
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c TString.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c Model.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c TVector.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -c main.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare 
+-Wno-long-long -O2 -o CounterSort TString.o Model.o TVector.o main.o -lm
+[Ср окт 04: 05:54] snowden@arch ~/Projects/DA/da1 [master] $ 
+valgrind ./CounterSort < tests/01.t > tmp 
+==1417== Memcheck, a memory error detector 
+==1417== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1417== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==1417== Command: ./CounterSort
+==1417== 
+==1417== 
+==1417== HEAP SUMMARY:
+==1417== in use at exit: 0 bytes in 0 blocks
+==1417== total heap usage: 1,517,400 allocs, 1,517,400 frees, 9,380,563 bytes 
+allocated
+==1417== 
+==1417== All heap blocks were freed -- no leaks are possible
+==1417== 
+==1417== For counts of detected and suppressed errors, rerun with: -v
+==1417== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[Ср окт 04: 05:54] snowden@arch ~/Projects/DA/da1 [master] $ wc tests/01.t 
+100000 200000 1083130 tests/01.t
+\end{alltt}
+\pagebreak
+
+\section{Тест производительности}
+Чтобы увидеть разницу был созданы файлы размером $10^3$, $10^5$, $10^{6}$, $10*10^{6}$ входных строк и был создан файл бенчмарка, с реализацией сортировки подсчетом и QSort из STD. Исходный код лежит в \enquote{дополнительных файлах} выше.
+
+\begin{alltt}
+$ CounterSort make bench
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2 
+-c benchmark.cpp
+g++ -g -std=c++11 -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -O2 
+-o benchmark benchmark.o -lm
+$ CounterSort wc tests/01.t
+	1000    2000   15797 tests/01.t
+$ CounterSort ./benchmark < tests/01.t
+Std SortTime = 0.000080
+Counting SortTime = 0.000241
+
+$ CounterSort wc tests/02.t
+	100000  200000 1083096 tests/02.t
+$ CounterSort ./benchmark < tests/02.t 
+Std SortTime = 0.010439
+Counting SortTime = 0.005754
+
+$ CounterSort wc tests/03.t
+	100000  200000 1083096 tests/03.t
+$ CounterSort ./benchmark < tests/03.t 
+Std SortTime = 0.095891
+Counting SortTime = 0.050415
+
+$ CounterSort wc tests/04.t
+	10000000 20000000 108302115 tests/04.t
+Std SortTime = 0.984407
+Counting SortTime = 0.854098
+\end{alltt}
+\pagebreak
+\section{Дневник отладки}
+\begin{enumerate}
+\item 29.09.17; 0:07; Сел за написание лабораторной. Написал TString, TPair, TVector. Долго искал информацию по грамотному разделению шаблона на несколько файлов;
+\item 1.10.17; 0:49; Первый провал на системе тестирования, убрал rm из makefile;
+\item 1.10.17; 1:04; Неверный ответ на первом тесте, программа теряла где-то одно значение. Забыл убрать отладочную строчку с удалением корневого элемента;
+\item 1.10.17; 23:24; Превышение временного порога на 10-м тесте. На самом деле я даже не удивился. Изменять размер вектора при каждом добавлении элемента само по себе не очень решение. Исправлял введением доп. переменной в вектор, которая считала сколько всего элементов реально заполнены и в случае её равенства размеру массива, увеличивал размер в 2 раза;
+\item 2.10.17; 2:37; Решил дописать кучу никому не нужных методов и оберток, чтобы не нарушать инкапсуляцию;
+\item 2.10.17; 4:55; Превышение временного порога на 12-м тесте. Поправил начальный размер вектора с 1-го элемента до 32-х;
+\item 2.10.17; 4:59; Программа получила статус \enquote{Ок} на системе автоматического тестирования;
+\item 2.10.17; 18:52; Новая версия программы с исправлениями утечек памяти провалила по времени 12-й тест, но это лишь потому что я решил попробовать заслать с начальным массивом в 8 элементов. Также запускал на разных машинках, дописывал код;
+\item 2.10.17; 21:41; Решил самоутвердиться и заслал финальную версию программы, которую тестировал пару-тройку часов;
+\item 3.10.17; 5:57; Финальная отправка на проверку, перед отправкой отчёта. Внесены мелкие правки по кодстайлу;
+\item 3.10.17; 6:27; Засылаю отчёт;
+\item 6.10.17; 14:54; Исправил отчёт. Нашёл ошибку в бенчмарке - он показывал не правильное время. Исправил замеры времени, также исправил нарушение инкапсуляции. Пришлось отказаться от шаблона в виде TVector.h+TVector.hpp и написать лишь одну его реализацию, которая зависит только от TPair. Также метод сортировки был перенесён в TVector.cpp.
+ \end{enumerate}
+ \pagebreak
+\section{Выводы}
+
+Сортировка подсчётом применима, если сортируемые числа имеют диапазон возможных значений, который достаточно мал по сравнению с сортируемым множеством. Само написание программы не вызвало особых затруднений. Куда больше сил и времени было потрачено на всевозможные тесты и приведение кода в презентабельный вид.\newline
+Весьма много времени ушло на сравнение моей сортировки с другими. Для себя я выяснил, что тестировать все на железе i7 4/8 + SSD (1400мб/1200мб чтение/запись в сек) глупая затея, ибо чтобы увидеть хоть какую-то разницу нужно создавать входные файлы $>10^{18}$ строк. Также написание лабораторной мне показалось чем-то схожим с хакатонами, которые я регулярно посещаю: быстро и красиво написать что-то почти не реально. Написанный за ночь код, нужно доводить еще пару тройку дней до совершенства, проводя уйму времени за тестами.
+\newline
+На вооружение забрал себе Radix, включающий в себя сортировку подсчётом. Потому что все проведённые мною тесты показали лучшие результаты именно на нем.
+\pagebreak
+\begin{thebibliography}{99}
+\bibitem{github_t}
+{\itshape GitHub одного из семинаристов.} \\URL: \texttt{https://github.com/toshunster/da} (дата обращения: 29.09.2017). 
+\bibitem{wikipedia_sort}
+{\itshape Шаблоны функций в С++.} \\URL: \texttt{http://cppstudio.com/post/5165/} (дата обращения: 30.09.2017). 
+\bibitem{wikipedia_sort}
+{\itshape Шаблоны функций в С++.} \\URL: \texttt{http://cppstudio.com/post/673/} (дата обращения: 1.10.2017). 
+\bibitem{wikipedia_sort}
+{\itshape Функция strcpy.} \\URL: \texttt{http://cppstudio.com/post/686/} (дата обращения: 1.10.2017). 
+\bibitem{wikipedia_sort}
+{\itshape Сортировка подсчётом — Википедия.} \\URL: \texttt{http://ru.wikipedia.org/wiki/Сортировка\_подсчётом} (дата обращения: 16.12.2013). 
+\bibitem{Kormen}
+Томас\,Х.\,Кормен, Чарльз\,И.\,Лейзерсон, Рональд\,Л.\,Ривест, Клиффорд\,Штайн.
+{\itshape Алгоритмы: построение и анализ, 2-е издание.} --- Издательский дом \enquote{Вильямс}, 2007. Перевод с английского: И.\,В.\,Красиков, Н.\,А.\,Орехова, В.\,Н.\,Романов. --- 1296 с. (ISBN 5-8459-0857-4 (рус.))
+\bibitem{wikipedia_sort}
+{\itshape Bitbucket лектора.} \\URL: \texttt{https://bitbucket.org/nkmakarov/da4students/} (дата обращения: 2.10.2017). \end{thebibliography}
+\end{document}
