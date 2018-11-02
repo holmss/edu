@@ -1,7 +1,0 @@
-/Struct/da4students
-/Struct/Tests
-*.tar
-*~
-build*
-CMakeLists.txt.user
-
