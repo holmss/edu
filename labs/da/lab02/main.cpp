@@ -100,7 +100,8 @@ void Parsing(char* action, char* buffer, unsigned long long* value) {
                 *value = (*value) * 10 + ch - '0';
             }
         }
-    } else if(ch == '!') {
+    } 
+    else if(ch == '!') {
         std::cin.get();
         while((ch = std::cin.get()) != ' ') {
             buffer[i++] = ch;

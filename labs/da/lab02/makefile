@@ -1,5 +1,5 @@
 .PHONY :  all, clean
-TARGET := $(shell basename $(shell pwd))
+TARGET := lab02
 SRC    := $(wildcard *.cpp)
 HDR    := $(wildcard *.hpp)
 CXX    := g++
