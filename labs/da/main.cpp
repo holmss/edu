@@ -1,15 +1,15 @@
 #include <cctype>
 
-#include "rbt.hpp"
+#include "rb.h"
 
 void Parsing(char* action, char* buffer, unsigned long long* value);
 
 int main() {
+    clock_t start = clock();
     TRBtree tree;
     char buffer[257];
     char action;
-    ull value;
-    
+    ulli value;
     while(true) {
         bool flag = true;
         TRBtree::TNode* tmp = nullptr;
@@ -23,14 +23,13 @@ int main() {
                 temp->key = new char[strlen(buffer) + 1];
                 strcpy(temp->key, buffer);
                 temp->value = value;
-                temp->clr = RED;
+                temp->color = TRBtree::RED;
 
                 if(!tree.Search(buffer)) {
                     tree.Insert(*temp);
                     std::cout << "OK\n";
                     flag = false;
-                } 
-                else {
+                } else {
                     std::cout << "Exist\n";
                 }
                 break;
@@ -40,18 +39,17 @@ int main() {
                 if(tmp) {
                     tree.RBDelete(tmp);
                     std::cout << "OK\n";
-                } 
-                else {
+                } else {
                     std::cout << "NoSuchWord\n";
                 }
                 break;
             }
             case 'S': {
-                tree.Save(buffer);
+                tree.Serialize(buffer);
                 break;
             }
             case 'L': {
-                tree.Load(buffer);
+                tree.Deserialize(buffer);
                 break;
             }
             case 'F': {
@@ -64,7 +62,14 @@ int main() {
         if(flag) {
             delete temp;
         }
+        // tree.Postorder(tree.root); // DELETE
     }
+    clock_t end = clock();
+    double time = (double)(end-start)/CLOCKS_PER_SEC;
+    
+    std::ofstream file("time");
+    file << "Time : " << time << '\n';
+    file.close();
     return 0;
 }
 
@@ -87,8 +92,7 @@ void Parsing(char* action, char* buffer, unsigned long long* value) {
             ch = tolower(std::cin.get());
             if(!isalpha(ch)) {
                 flag = false;
-            } 
-            else {
+            } else {
                 buffer[i++] = ch;
             }
         }
@@ -112,8 +116,7 @@ void Parsing(char* action, char* buffer, unsigned long long* value) {
             buffer[i++] = ch;
         }
         buffer[i] = '\0';
-    } 
-    else {
+    } else {
         *action = 'F';
         buffer[0] = tolower(ch);
         i++;
