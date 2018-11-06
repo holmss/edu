@@ -13,6 +13,24 @@
 //дочерний процесс вычисляет среднеарифметическое этих матриц
 //родительский процесс печатает результат
 
+void child(int fd_wrt, int *matrix, int n, int m) {
+	int    sum = 0, i;
+	double res;
+
+	for (i = 0; i < n*m; i++)
+		sum += matrix[i];
+	
+	res = (double)sum/(n*m);
+	write(fd_wrt, &res, sizeof(res));
+}
+
+void parent(int fd_read) {
+	double res;
+
+	read(fd_read, &res, sizeof(res));
+	printf("The middle value is: %g\n", res);
+}
+
 int main ()
 {
     pid_t p;
@@ -22,9 +40,8 @@ int main ()
     if (pe)
         perror("pipe");
 
-    int i = 0, sum = 0;
+    int i = 0;
     int *matrix;
-    double res = 0;
     int n, m;
 
     printf("Enter the number of matrix elements in format \nlines: \tcolumns:\n");
@@ -41,18 +58,13 @@ int main ()
             perror ("fork");
             break;
         case 0:
-            for (i = 0; i < n*m; i++)
-                sum += matrix[i];
-            
-            res = (double)sum/(n*m);
             close(fd[0]);
-            write(fd[1], &res, sizeof(res));
+			child(fd[1], matrix, n, m);
             break;
 
         default:
             close(fd[1]);
-            read(fd[0], &res, sizeof(res));
-            printf("The middle value is: %g\n", res);
+			parent(fd[0]);
     }
 
     free(matrix);
