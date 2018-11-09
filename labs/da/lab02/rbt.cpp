@@ -1,37 +1,42 @@
 #include "rbt.hpp"
 
-TRBtree::TRBtree() {
+Trbt::Trbt() {
     leaf = new TNode(BLACK, 0, nullptr);
     root = leaf;
 }
 
-TRBtree::TNode::TNode(color new_clr, ull new_value, char* new_key) {
-    prev = nullptr;
-    left = nullptr;
-    right = nullptr;
-    value = new_value;
-    clr = new_clr;
-    key = new_key;
+Trbt::~Trbt() {
+    delete root;
+    delete leaf;
 }
 
-TRBtree::TNode::~TNode() {
-    delete [] key;
+Trbt::TNode::TNode(color new_clr, ull new_key, char* new_value) {
+    prev = nullptr;
+    left = nullptr;
+    right = nullptr;
+    key = new_key;
+    clr = new_clr;
+    word = new_value;
+}
+
+Trbt::TNode::~TNode() {
+    delete [] word;
 
     prev = nullptr;
     left = nullptr;
     right = nullptr;
-    key = nullptr;
+    //word = nullptr;
 }
 
 //вставка элемента
-void TRBtree::Insert(TNode& new_node) {
-    TNode* prev_node = this->leaf;
-    TNode* current_node = this->root;
+void Trbt::Insert(TNode& new_node) {
+    TNode* prev_node = leaf;
+    TNode* current_node = root;
 
     //идем в лист
-    while(current_node != this->leaf) {
+    while(current_node != leaf) {
         prev_node = current_node;
-        if(0 > strcmp(new_node.key, current_node->key)) {
+        if(0 > strcmp(new_node.word, current_node->word)) {
             current_node = current_node->left;
         }
         else {
@@ -41,36 +46,36 @@ void TRBtree::Insert(TNode& new_node) {
 
     //присваиваем значение узлу
     new_node.prev = prev_node;
-    if(prev_node == this->leaf) {
-        this->root = &new_node;
+    if(prev_node == leaf) {
+        root = &new_node;
     }
-    else if(0 > strcmp(new_node.key, prev_node->key)) {
+    else if(0 > strcmp(new_node.word, prev_node->word)) {
         prev_node->left = &new_node;
     }
     else {
         prev_node->right = &new_node;
     }
 
-    new_node.right = this->leaf;
-    new_node.left = this->leaf;
+    new_node.right = leaf;
+    new_node.left = leaf;
     new_node.clr = RED;
     
     Fix(&new_node); //запускаем балансировку дерева
 }
 
 //левый поворот
-void TRBtree::LeftRotate(TNode& current_node) {
+void Trbt::LeftRotate(TNode& current_node) {
     TNode* y = current_node.right;                      //берем правого сына текущего узла
     current_node.right = y->left;                       //записываем в него значение его левого сына 
     
-    if(y->left != this->leaf) {                         //если он не является листом, то записываем его как сына текущего узла
+    if(y->left != leaf) {                         //если он не является листом, то записываем его как сына текущего узла
         y->left->prev = &current_node;
     }
     
     y->prev = current_node.prev;                        //меняем указатель на предыдущий элемент для правого сына текущего узла на предыдущий для текущего
     
-    if(current_node.prev == this->leaf) {               //если предыдущий для текущего - лист узла, в котором мы находимся
-        this->root = y;                             //то присвоим ему правый элемент текущего узла
+    if(current_node.prev == leaf) {               //если предыдущий для текущего - лист узла, в котором мы находимся
+        root = y;                             //то присвоим ему правый элемент текущего узла
     }
     else if(&current_node == current_node.prev->left) { //если текущий узел - левый сын своего отца
         current_node.prev->left = y;                //то присвоим ему правый элемент текущего узла
@@ -84,18 +89,18 @@ void TRBtree::LeftRotate(TNode& current_node) {
 }
 
 //правый поворот (аналогично левому)
-void TRBtree::RightRotate(TNode& current_node) {
+void Trbt::RightRotate(TNode& current_node) {
     TNode* y = current_node.left;
     current_node.left = y->right;
 
-    if(y->right != this->leaf) {
+    if(y->right != leaf) {
         y->right->prev = &current_node;
     }
     
     y->prev = current_node.prev;
     
-    if(current_node.prev == this->leaf) {
-        this->root = y;
+    if(current_node.prev == leaf) {
+        root = y;
     }
     else if(&current_node == current_node.prev->right) {
         current_node.prev->right = y;
@@ -109,7 +114,7 @@ void TRBtree::RightRotate(TNode& current_node) {
 }
 
 //балансировка дерева при вставке
-void TRBtree::Fix(TNode* current_node) {
+void Trbt::Fix(TNode* current_node) {
     while(current_node->prev->clr == RED) {//пока отец красный
         if(current_node->prev == current_node->prev->prev->left) {  //если отец - левый сын своего отца
             TNode* y = current_node->prev->prev->right;         //смотрим дядю
@@ -150,18 +155,18 @@ void TRBtree::Fix(TNode* current_node) {
             }
         }
     }
-    this->root->clr = BLACK; //красим корень в черный, чтобы свойства красно-черных деревьев не нарушались
+    root->clr = BLACK; //красим корень в черный, чтобы свойства красно-черных деревьев не нарушались
 }
 
 //поиск по дереву
-TRBtree::TNode* TRBtree::Search(const char* pattern) {
-    TNode* tmp = this->root;
+Trbt::TNode* Trbt::Search(const char* pattern) {
+    TNode* tmp = root;
 
-    while(tmp != this->leaf) {
-        if(!strcmp(tmp->key, pattern)) {
+    while(tmp != leaf) {
+        if(!strcmp(tmp->word, pattern)) {
             return tmp;
         } 
-        else if(0 > strcmp(tmp->key, pattern)) {
+        else if(0 > strcmp(tmp->word, pattern)) {
             tmp = tmp->right;
         } 
         else {
@@ -172,17 +177,17 @@ TRBtree::TNode* TRBtree::Search(const char* pattern) {
 }
 
 //поиск минимума (идем в самый левый лист)
-TRBtree::TNode* TRBtree::FindMin(TNode* current_node) {
-    while(current_node->left != this->leaf) {
+Trbt::TNode* Trbt::FindMin(TNode* current_node) {
+    while(current_node->left != leaf) {
         current_node = current_node->left;
     }
     return current_node;
 }
 
 //изменение узла (нужно для удаления)
-void TRBtree::Exchange(TNode* old, TNode* upd) {
-    if(old->prev == this->leaf) {
-        this->root = upd;
+void Trbt::Exchange(TNode* old, TNode* upd) {
+    if(old->prev == leaf) {
+        root = upd;
     } else if(old == old->prev->left) {
         old->prev->left = upd;
     } else {
@@ -192,17 +197,17 @@ void TRBtree::Exchange(TNode* old, TNode* upd) {
 }
 
 //удаление узла
-void TRBtree::RBDelete(TNode* current_node) {
+void Trbt::RBDelete(TNode* current_node) {
     TNode* del_node = current_node;
     TNode* del_child = nullptr;
     color orig_clr = del_node->clr;
 
-    if(current_node->left == this->leaf) {                  //если левый ребенок текущего узла является листом
+    if(current_node->left == leaf) {                  //если левый ребенок текущего узла является листом
         del_child = current_node->right;                    //берем правого ребенка и меняем его с текущим узлом
     
         Exchange(current_node, current_node->right);
     } 
-    else if(current_node->right == this->leaf) {            //аналогично для левого ребенка
+    else if(current_node->right == leaf) {            //аналогично для левого ребенка
         del_child = current_node->left;
     
         Exchange(current_node, current_node->left);
@@ -235,8 +240,8 @@ void TRBtree::RBDelete(TNode* current_node) {
 }
 
 //балансировка дерева при удалении
-void TRBtree::FixD(TNode* current_node) {
-    while(current_node != this->root && current_node->clr == BLACK) {
+void Trbt::FixD(TNode* current_node) {
+    while(current_node != root && current_node->clr == BLACK) {
         if(current_node == current_node->prev->left) {
             TNode* sibling_node = current_node->prev->right;
        
@@ -267,7 +272,7 @@ void TRBtree::FixD(TNode* current_node) {
             
                 LeftRotate(*(current_node->prev));
             
-                current_node = this->root;
+                current_node = root;
             }
         } 
         else {
@@ -298,7 +303,7 @@ void TRBtree::FixD(TNode* current_node) {
             
                 RightRotate(*(current_node->prev));
             
-                current_node = this->root;
+                current_node = root;
             }
         }
     }
@@ -311,11 +316,11 @@ std::istream& operator>>(std::istream& is, const color& clr) {
 }
 
 //Запись в файл от пути (проверка на возможность записи)
-void TRBtree::Save(const char* buffer) {
+void Trbt::Save(const char* buffer) {
     std::ofstream output(buffer);
     
     if(output.is_open()) {
-        Save(output, this->root);
+        Save(output, root);
         std::cout << "OK\n";
     } 
     else {
@@ -326,52 +331,52 @@ void TRBtree::Save(const char* buffer) {
 }
 
 //запись в заданный файл имеющегося дерева
-void TRBtree::Save(std::ofstream& output, TNode* root) {
-    if(root == this->leaf) {
+void Trbt::Save(std::ofstream& output, TNode* root) {
+    if(root == leaf) {
         output << LEAF << " ";
         return;
     }
     
-    output << root->key << " " << root-> value << " " << root->clr << " ";
+    output << root->word << " " << root-> key << " " << root->clr << " ";
     
     Save(output, root->left);
     Save(output, root->right);
 }
 
 //загрузка словаря из файла (проверка на возможность загрузки)
-void TRBtree::Load(const char* buffer) {
+void Trbt::Load(const char* buffer) {
     std::ifstream input(buffer);
     
     if(input.is_open()) {
         Reborn();
-        Load(input, this->root);
+        Load(input, root);
         std::cout << "OK\n";
     } 
     else {
         std::cout << "ERROR: Couldn't load file\n";
     }
     
-    root->prev = this->leaf;
+    root->prev = leaf;
     input.close();
 }
 
 //загрузка словаря из данного файла
-void TRBtree::Load(std::ifstream& input, TNode*& root) {
+void Trbt::Load(std::ifstream& input, TNode*& root) {
     char buffer[256];
-    ull value = 0;
+    ull key = 0;
     color clr = RED;
     
     if(input.peek() == EOF || (input >> buffer && !strcmp(buffer, "-1"))) {
         return;
     }
 
-    input >> value >> clr;
+    input >> key >> clr;
     char* tmpKey = new char[strlen(buffer) + 1];
     strcpy(tmpKey, buffer);
 
-    root = new TNode(clr, value, tmpKey);
-    root->left = this->leaf;
-    root->right = this->leaf;
+    root = new TNode(clr, key, tmpKey);
+    root->left = leaf;
+    root->right = leaf;
     
     Load(input, root->left);
     Load(input, root->right);
@@ -381,13 +386,15 @@ void TRBtree::Load(std::ifstream& input, TNode*& root) {
 }
 
 //переинициализация
-void TRBtree::Reborn() {
-    this->root = this->leaf;
-    this->leaf->prev = nullptr;
-    this->leaf->left = nullptr;
-    this->leaf->right = nullptr;
-    this->leaf->value = 0;
-    this->leaf->clr = BLACK;
-    this->leaf->key = nullptr;
+void Trbt::Reborn() {
+    root = leaf;
+    leaf->prev = nullptr;
+    leaf->left = nullptr;
+    leaf->right = nullptr;
+    leaf->key = 0;
+    leaf->clr = BLACK;
+    if (leaf->word) 
+        delete[] leaf->word;
+    leaf->word = nullptr;
 }
 
