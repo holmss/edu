@@ -22,6 +22,7 @@ Trbt::~Trbt()
 
     if (leaf)
         delete leaf;
+    leaf = nullptr;
 }
 
 TNode::TNode(color new_clr, ull new_key, char* new_value)
@@ -41,6 +42,16 @@ TNode::~TNode()
         delete[] word;
 
     prev = nullptr;
+    // if (left == right)
+    //     left = nullptr;
+    // if (left == this)
+    //     left = nullptr;
+    // if (right == this)
+    //     right = nullptr;
+    // if (left)
+    //     delete left;
+    // if (right)
+    //     delete right;
     left = nullptr;
     right = nullptr;
     //word = nullptr;
@@ -319,9 +330,11 @@ void Trbt::FixD(TNode* current_node)
     current_node->clr = BLACK;
 }
 
-std::istream& operator>>(std::istream& is, const color& clr)
+std::istream& operator>>(std::istream& is, color& clr)
 {
-    is >> clr;
+    int tmp;
+    is >> tmp;
+    clr = (color)tmp;
     return is;
 }
 
@@ -374,6 +387,7 @@ void Trbt::Load(const char* buffer)
 //загрузка словаря из данного файла
 void Trbt::Load(std::ifstream& input, TNode*& root)
 {
+    // delete root;
     char buffer[256];
     ull key = 0;
     color clr = RED;
