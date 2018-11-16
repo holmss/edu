@@ -2,32 +2,32 @@
 #define RBT_H
 
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 using ull = unsigned long long;
 
 const short LEAF = -1;
 
-enum color {BLACK, RED};
+enum color { BLACK,
+    RED };
 
 class TNode {
-    public:
-        TNode() {};
-        TNode(color, ull, char*);
-        ~TNode();
+public:
+    TNode(){};
+    TNode(color, ull, char*);
+    ~TNode();
 
-        TNode* prev;
-        TNode* left;
-        TNode* right;
-        char* word;
-        ull key;
-        color clr;
+    TNode* prev;
+    TNode* left;
+    TNode* right;
+    char* word;
+    ull key;
+    color clr;
 };
 
-class Trbt : public TNode {
+class Trbt {
 public:
-
     Trbt();
     ~Trbt();
 
@@ -59,6 +59,5 @@ private:
     TNode* root;
     TNode* leaf;
 };
-
 
 #endif
