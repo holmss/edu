@@ -5,13 +5,14 @@
 int main()
 {
     Trbt tree;
+    // return 0;
     const int size = 257;
     char buffer[size];
     char rdn;
     ull key;
 
     while (std::cin >> rdn) {
-        Trbt::TNode* temp = new Trbt::TNode;
+        TNode* temp = new TNode;
         switch (rdn) {
         case '+':
             std::cin >> buffer >> key;
@@ -27,8 +28,7 @@ int main()
             if (!tree.Search(buffer)) {
                 tree.Insert(*temp);
                 std::cout << "OK\n";
-            } 
-            else {
+            } else {
                 delete temp;
                 std::cout << "Exist\n";
             }
@@ -45,8 +45,7 @@ int main()
             if (tree.Search(buffer)) {
                 tree.RBDelete(tree.Search(buffer));
                 std::cout << "OK\n";
-            } 
-            else {
+            } else {
                 std::cout << "NoSuchWord\n";
             }
 
@@ -59,8 +58,7 @@ int main()
             if (*buffer == 'S') {
                 std::cin >> buffer;
                 tree.Save(buffer);
-            } 
-            else if (*buffer == 'L') {
+            } else if (*buffer == 'L') {
                 std::cin >> buffer;
                 tree.Load(buffer);
             }
@@ -75,16 +73,16 @@ int main()
                 buffer[i] = tolower(buffer[i]);
             }
 
-            Trbt::TNode* tmp = tree.Search(buffer);
-            if(tmp) {
+            TNode* tmp = tree.Search(buffer);
+            if (tmp) {
                 std::cout << "OK: " << tmp->key << '\n';
-            }
-            else
+            } else
                 std::cout << "NoSuchWord\n";
 
             break;
         }
     }
+    // delete[] buffer;
     // delete tree;
     return 0;
 }
