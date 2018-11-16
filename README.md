@@ -1,2 +1,2 @@
 # edu
-MAI labs
+MAI labs education
