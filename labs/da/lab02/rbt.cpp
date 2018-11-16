@@ -1,4 +1,4 @@
-#include "rbt.hpp"
+ #include "rbt.hpp"
 
 Trbt::Trbt() {
     leaf = new TNode(BLACK, 0, nullptr);
@@ -10,7 +10,7 @@ Trbt::~Trbt() {
     delete leaf;
 }
 
-Trbt::TNode::TNode(color new_clr, ull new_key, char* new_value) {
+TNode::TNode(color new_clr, ull new_key, char* new_value) {
     prev = nullptr;
     left = nullptr;
     right = nullptr;
@@ -19,7 +19,7 @@ Trbt::TNode::TNode(color new_clr, ull new_key, char* new_value) {
     word = new_value;
 }
 
-Trbt::TNode::~TNode() {
+TNode::~TNode() {
     delete [] word;
 
     prev = nullptr;
@@ -159,7 +159,7 @@ void Trbt::Fix(TNode* current_node) {
 }
 
 //поиск по дереву
-Trbt::TNode* Trbt::Search(const char* pattern) {
+TNode* Trbt::Search(const char* pattern) {
     TNode* tmp = root;
 
     while(tmp != leaf) {
@@ -177,7 +177,7 @@ Trbt::TNode* Trbt::Search(const char* pattern) {
 }
 
 //поиск минимума (идем в самый левый лист)
-Trbt::TNode* Trbt::FindMin(TNode* current_node) {
+TNode* Trbt::FindMin(TNode* current_node) {
     while(current_node->left != leaf) {
         current_node = current_node->left;
     }

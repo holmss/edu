@@ -11,9 +11,7 @@ const short LEAF = -1;
 
 enum color {BLACK, RED};
 
-class Trbt {
-public:
-    class TNode {
+class TNode {
     public:
         TNode() {};
         TNode(color, ull, char*);
@@ -25,10 +23,16 @@ public:
         char* word;
         ull key;
         color clr;
-    };
+};
+
+class Trbt : public TNode {
+public:
 
     Trbt();
     ~Trbt();
+
+    //friend class TNode;
+
     void Reborn();
     TNode* Search(const char*);
 
@@ -55,5 +59,6 @@ private:
     TNode* root;
     TNode* leaf;
 };
+
 
 #endif
