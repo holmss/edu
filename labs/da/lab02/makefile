@@ -3,7 +3,7 @@ TARGET := lab02
 SRC    := $(wildcard *.cpp)
 HDR    := $(wildcard *.hpp)
 CXX    := g++
-CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -Wno-long-long -g3 -lm
+CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -Wno-long-long -g3 -lm -fprofile-arcs -ftest-coverage
 
 all: $(TARGET)
 
