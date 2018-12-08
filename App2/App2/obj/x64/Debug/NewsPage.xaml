@@ -8,8 +8,11 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <GridView>
-        <Image Source="Assets/4.jpg"/>
-    </GridView>
+    <ScrollViewer>
+        <StackPanel>
+            <Image Source="Assets/1.jpg"/>
+            <Image Source="Assets/2.jpg"/>
+        </StackPanel>
+    </ScrollViewer>
 </Page>
 

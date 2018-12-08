@@ -47,7 +47,7 @@
             <SplitView.Pane>
                 <ListBox Name="MyListBox"
                          SelectionChanged="ListBox_SelectionChanged"
-                         SelectionMode="Single" HorizontalAlignment="Stretch" Margin="-1,0,1,0" VerticalAlignment="Stretch">
+                         SelectionMode="Single">
                     <ListBoxItem Name="MyPage">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE187;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>

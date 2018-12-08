@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-12-08T08:53:02.753</Modified>
+      <Modified>2018-12-08T09:51:15.074</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\App2.exe">
       <PackagePath>entrypoint\App2.exe</PackagePath>
-      <Modified>2018-12-08T08:53:01.753</Modified>
+      <Modified>2018-12-08T09:51:13.451</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\UWPNuGetPackages\microsoft.csharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -558,23 +558,23 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\App2.xr.xml">
       <PackagePath>App2.xr.xml</PackagePath>
-      <Modified>2018-12-08T08:53:01.401</Modified>
+      <Modified>2018-12-08T09:51:13.046</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2018-12-08T08:53:01.448</Modified>
+      <Modified>2018-12-08T09:51:13.137</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2018-12-08T08:53:01.450</Modified>
+      <Modified>2018-12-08T09:51:13.140</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\MyPage.xbf">
       <PackagePath>MyPage.xbf</PackagePath>
-      <Modified>2018-12-08T08:53:01.452</Modified>
+      <Modified>2018-12-08T09:51:13.142</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\NewsPage.xbf">
       <PackagePath>NewsPage.xbf</PackagePath>
-      <Modified>2018-12-08T08:53:01.454</Modified>
+      <Modified>2018-12-08T09:51:13.143</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.17134.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -586,7 +586,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Валерия\source\repos\App2\App2\bin\x64\Debug\Core\App2.exe">
       <PackagePath>App2.exe</PackagePath>
-      <Modified>2018-12-08T08:53:02.745</Modified>
+      <Modified>2018-12-08T09:51:15.058</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
