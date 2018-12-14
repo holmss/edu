@@ -144,8 +144,8 @@ int main()
         free(graph.adj_matrix[i]);
     }
 
-    free(graph.adj_matrix);
 
+    free(graph.adj_matrix);
     free(graph.g_elems);
     free(graph.g_links);
 
