@@ -49,7 +49,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "%s\n", "Too much threads for this amount of memory");
         exit(EXIT_FAILURE);
     }
-    pthread_t *thread_id = (pthread_t *) malloc(command.threads_num * sizeof(pthread_t));
+    pthread_t *thread_id = 
 
     Params *params = (Params *) malloc(command.threads_num * sizeof(Params));
 
