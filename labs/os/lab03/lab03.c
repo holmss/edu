@@ -28,17 +28,6 @@ typedef struct TVertex {
     int used;
 } Vertex;
 
-typedef struct TNode {
-    Vertex* value;
-    struct TNode* next;
-} Node;
-
-typedef struct TQueue {
-    Node* head;
-    Node* tail;
-    int len;
-} Queue;
-
 typedef struct TPare {
     Vertex first, second;
 } Pare;
@@ -51,70 +40,66 @@ typedef struct TGraph {
 } Graph;
 
 typedef struct TArgs {
-    Queue* q;
     Graph g;
-    int i;
+    int start;
+    int curr;
 } Args;
 
-Queue* Create()
+void* Search(void* arg)
 {
-    Queue* res = (Queue*)malloc(sizeof(Queue));
-    res->head = (Node*)malloc(sizeof(Node));
-    res->tail = NULL;
-    res->len = 0;
-    return res;
-}
+    Args* args = (Args*)arg;
+    int status;
+    pthread_t* threads = (pthread_t*)malloc(sizeof(pthread_t) * args->g.el_num);
+    for (int i = 0; i < args->g.el_num; ++i)
+        threads[i] = 0;
+    Args* params = (Args*)malloc(sizeof(Args) * args->g.el_num);
+    for (int i = 0; i < args->g.el_num; ++i)
+        params[i] = *args;
+    for (int i = 0; i < args->g.el_num; ++i) {
+        if (args->curr != i) {
+            if (i == args->start) {
+                pthread_mutex_lock(&lock);
+                ++cycle;
+                pthread_mutex_unlock(&lock);
 
-Queue* Push(Queue* queue, Vertex* value)
-{
-    Node* node = (Node*)malloc(sizeof(Node));
-    node->value = value;
-    node->next = NULL;
-    if (!queue->tail) {
-        queue->tail = queue->head = node;
-        return queue;
+                goto end;
+            }
+            if (args->g.adj_matrix[args->curr][i]) {
+                params[i].curr = i;
+                status = pthread_create(&threads[i], NULL, Search, params + i);
+                if (status != 0) {
+                    printf("pthread_create error\n");
+                    exit(ERROR_JOIN_THREAD);
+                }
+            }
+        }
+    }
+end:
+
+    for (int i = 0; i < args->g.el_num; ++i) {
+        if (threads[i]) {
+            status = pthread_detach(threads[i]);
+            if (status != 0) {
+                printf("pthread_join error\n");
+                exit(ERROR_JOIN_THREAD);
+            }
+        }
     }
 
-    printf("Pushing value: %d\n", node->value->value);
-    printf("Pushing value: %d\n", value->value);
-
-    queue->tail->next = node;
-    queue->tail = node;
-    // queue->head = queue->tail = node;
-    queue->len++;
-    return queue;
+    free(threads);
+    // free(params);//! так вроде правильно но если раскомментировать то ошибки вылезают
+    return NULL;
 }
 
-int Pop(Queue* queue)
-{
-    int value = 0;
-    Node* to_del = queue->head;
-    if (queue->len--) {
-        value = queue->head->value->value;
-        queue->head = queue->head->next;
-        free(to_del);
-    }
-    return value;
-}
+// void Print(const Queue* queue)
+// {
+//     const Node* node = queue->head;
 
-void Clear(Queue* queue)
-{
-    while (queue->head) {
-        Pop(queue);
-    }
-
-    queue->head = queue->tail = NULL;
-}
-
-void Print(const Queue* queue)
-{
-    const Node* node = queue->head;
-
-    for (; node; node = node->next) {
-        printf("%d ", node->value->value);
-    }
-    printf("\n");
-}
+//     for (; node; node = node->next) {
+//         printf("%d ", node->value->value);
+//     }
+//     printf("\n");
+// }
 
 int factorial(int n)
 {
@@ -133,34 +118,6 @@ int CheckPare(Pare p, Pare* arr, int arr_size)
             return 0;
     }
     return 1;
-}
-
-void* ByPassWide(void* args)
-{
-    Args* params = (Args*)args;
-    Queue* q = params->q;
-    Graph g = params->g;
-    int i = params->i;
-
-    pthread_mutex_lock(&lock);
-
-    Vertex* v = q->head->value;
-    //printf("%d\n", v.value);
-
-    if (g.g_elems[i].used == 1)
-        cycle = 1;
-
-    if (g.adj_matrix[v->num][i] == 1 && g.g_elems[i].used == 0) {
-        q = Push(q, &g.g_elems[i]);
-        g.g_elems[i].used = 1;
-    }
-
-    v->used = 1;
-    Pop(q);
-
-    pthread_mutex_unlock(&lock);
-
-    return SUCCESS;
 }
 
 int main()
@@ -229,48 +186,31 @@ int main()
         putchar('\n');
     }
 
-    pthread_t threads[NUM_OF_THREADS];
+    // pthread_t threads[NUM_OF_THREADS];
     int status = 0;
     int status_addr = 0;
-
-    Queue* queue = Create();
-
-    queue = Push(queue, &graph.g_elems[0]);
+    Args params;
+    params.g = graph;
     // printf("%d\n", queue->head->value->value);
     graph.g_elems[0].used = 1;
+    for (int i = 0; i < graph.el_num; ++i) {
 
-    Args params;
-    params.q = queue;
-    params.g = graph;
+        params.start = params.curr = i;
 
-    while (queue->len != 0) {
-        for (i = 0; i < graph.el_num; ++i) {
-            params.i = i;
-            status = pthread_create(&threads[i], NULL, ByPassWide, (void*)&params);
-
-            if (status != 0) {
-                printf("pthread_create error\n");
-                exit(ERROR_CREATE_THREAD);
-            }
-        }
+        Search(&params);
     }
-
-    for (i = 0; j < graph.el_num; ++j) {
-        status = pthread_join(threads[j], NULL);
-        if (status != 0) {
-            printf("pthread_join error\n");
-            exit(ERROR_JOIN_THREAD);
-        }
-    }
+    // pthread_create(threads[0], NULL, &Search, &params);
+    // status = pthread_join(threads[j], NULL);
+    // if (status != 0) {
+    //     printf("pthread_join error\n");
+    //     exit(ERROR_JOIN_THREAD);
+    // }
+    // }
 
     if (cycle == 0)
         printf("There are no cycles in that graph\n");
-
     else
         printf("There is a cycle\n");
-
-    Clear(queue);
-    free(queue);
 
     for (i = 0; i < graph.el_num; i++) {
         free(graph.adj_matrix[i]);
