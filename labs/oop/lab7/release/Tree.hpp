@@ -8,6 +8,7 @@ template <class T>
 class Tree {
 private:
     pTree root;
+    static std::shared_ptr<TAllocationBlock> allocator;
 
 public:
     Tree();
@@ -18,12 +19,24 @@ public:
 
     template <class B>
     friend std::ostream& operator<<(std::ostream& os, const Tree<B>& node);
-    void Remove(char* path);
-    void add(Figure* triangle);
+
+    void add(T* figure) { add(figure, root); }
+    void add(T* figure, pTree node);
+    void Remove(char* path) { Remove(get(path)); }
+    void Remove(pTree node);
+    void stream(std::ostream& os, const TTree<T>& node, int height) const;
+
+    // template <class B>
+    // friend std::ostream& operator<<(std::ostream& os, const TTree<B>& tree);
+
     pTree get(char* path);
+    Tree* Sort();
     pTree get() { return get("\0"); }
-    std::shared_ptr<T> getItem(char* path);
+    std::shared_ptr<T> getItem(char* path) { return get(path)->value; }
     bool empty();
+
+    void* operator new(size_t size);
+    void operator delete(void* p);
 };
 
 #include "Tree.h"

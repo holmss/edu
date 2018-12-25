@@ -1,21 +1,26 @@
 #include "Tree.hpp"
 #include <iostream>
 
-#define line std::cout << "————————————————————————————————————————————" << std::endl
+#define line std::cout << "____________________________________________" << std::endl
+
+//!test!\\
++ t 1 2 2 + r 2 4 + s 2 + t 1 1 1 + s 3 + r 2 1 + r 1 2
 
 int main()
 {
-    //std::shared_ptr<Tree<Figure>> node(new Tree<Figure>());
-    TList<TTree<Figure>,Figure> list;
+    // std::ios_base::sync_with_stdio(false);
+    std::shared_ptr<Tree<Figure>> node(new Tree<Figure>());
     char choice;
-    char path[100];
+    char path[200];
 
     std::cout << "Usage:\n"
-              << "\t Add element:   \t + side_a side_b side_c\n"
+              << "\t Add element:   \t + {elem_type} {sides}\n"
               << "\t Delete element:\t - path \n"
-              << "\t\t path={r,l}*\n"
+              << "\t\t\t\t path={r,l}*\n"
               << "\t Get element:   \t g path\n"
-              << "\t\t path={r,l}*\n\n";
+              << "\t\t\t\t path={r,l}*\n"
+              << "\t Show container:\t s\n\n"
+              << "\t Sort container:\t %\n\n";
 
     std::cout << "command>> ";
     while (std::cin.get(choice)) {
@@ -24,8 +29,7 @@ int main()
             std::cin >> choice;
             switch (choice) {
             case 'p':
-                //node->add(new Pentagon(std::cin));
-                
+                node->add(new Pentagon(std::cin));
                 break;
             case 'o':
                 node->add(new Octagon(std::cin));
@@ -37,16 +41,16 @@ int main()
             break;
         }
         case '-': {
-            std::cin.getline(path, 100);
+            std::cin.getline(path, 200);
             node->Remove(path);
             break;
         }
 
         case 'g': {
-            std::cin.getline(path, 100);
+            std::cin.getline(path, 200);
             if (!node->empty()) {
 
-                std::cout << "————————————————————————————————————————————" << std::endl;
+                line;
                 std::weak_ptr<Figure> temp = node->getItem(path);
                 temp.lock()->Print();
                 std::cout << "\tSquare = " << temp.lock()->Square() << std::endl;
@@ -55,18 +59,28 @@ int main()
             goto end;
         }
         case 's': {
-            std::cout << "Show:" << '\n';
+            std::cout << "Show:\n";
             for (auto i : *node) {
-                i.get()->Print();
+                i->Print();
                 std::cout << "->";
             }
             std::cout << "nullptr\n";
             goto end;
         }
+        case '%': {
+            std::cout << "Sort:\n";
+            node->Sort();
+            for (auto i : *node) {
+                std::cout << i->Square();
+                std::cout << ' ';
+            }
+            std::cout << '\n';
+            goto end;
+        }
         default:
             continue;
         }
-        std::cout << "————————————————————————————————————————————" << std::endl;
+        line;
         if (node && !node->empty())
             std::cout << *node;
         else

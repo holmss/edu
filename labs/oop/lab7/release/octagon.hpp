@@ -2,7 +2,7 @@
 #define	OCTAGON_H
 #include <cstdlib>
 #include <iostream>
-#include "figure.hpp"
+#include "Figure.hpp"
 
 class Octagon : public Figure{
 public:

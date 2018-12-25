@@ -2,7 +2,7 @@
 #define	HEXAGON_H
 #include <cstdlib>
 #include <iostream>
-#include "figure.hpp"
+#include "Figure.hpp"
 
 class Hexagon : public Figure{
 public:

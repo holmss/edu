@@ -12,5 +12,5 @@ clean:
 $(TARGET): $(SRC:%.cpp=%.o)
 	$(CXX) $(CFLAGS) -o $@ $^
 
-%.o: %.cpp %.hpp
+%.o: %.cpp %.h
 	$(CXX) $(CFLAGS) -c -o $@ $<

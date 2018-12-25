@@ -26,7 +26,8 @@ void TTree<T>::stream(std::ostream& os, const TTree<T>& node, int height) const
             os << "\t";
 
         node.value->Print();
-        
+        if (node.right || node.left)
+            os << "<";
 
         os << std::endl;
     }
@@ -54,6 +55,7 @@ void TTree<T>::add(T* figure, pTree node)
         return;
     }
     if (figure->Square() <= 0) {
+        delete figure;
         return;
     }
     if (figure->Square() >= value->Square()) // сбалансированное дерево
@@ -104,7 +106,7 @@ pTree TTree<T>::GetNext()
         while (node->left)
             node = node->left;
     else {
-        if ( prev.lock() && prev.lock()->right.get() == this) {
+        if (prev.lock() && prev.lock()->right.get() == this) {
             node = prev.lock();
             while (node->prev.lock() && node->prev.lock()->left != node)
                 node = node->prev.lock();

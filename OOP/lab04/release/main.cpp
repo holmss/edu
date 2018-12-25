@@ -8,45 +8,45 @@
 int main()
 {
     std::shared_ptr<Tree<Figure>> node(new Tree<Figure>());
-    char choice;
-    char path[100];
+    char choice[256];
+    char path[256];
 
     std::cout << "Usage:\n"
-              << "\t Add element:   \t + side\n"
+              << "\t Add element:   \t + side_a side_b side_c\n"
               << "\t Delete element:\t - path \n"
               << "\t\t path={r,l}*\n"
               << "\t Get element:   \t g path\n"
               << "\t\t path={r,l}*\n\n";
 
     std::cout << "command>> ";
-    while (std::cin.get(choice)) {
-        switch (choice) {
+    while (std::cin.get(*choice)) {
+        switch (*choice) {
         case '+': {
             std::cin >> choice;
-            switch (choice) {
-            case 'p':
-                node->add(new Pentagon(std::cin));
+            switch (*choice) {
+            case 't':
+                node->add(new Triangle(std::cin));
                 break;
-            case 'o':
-                node->add(new Octagon(std::cin));
+            case 'r':
+                node->add(new Rectangle(std::cin));
                 break;
-            case 'h':
-                node->add(new Hexagon(std::cin));
+            case 's':
+                node->add(new Sqr(std::cin));
                 break;
             }
             break;
         }
         case '-': {
-            std::cin.getline(path, 100);
+            std::cin.getline(path, 200);
             node->Remove(path);
             break;
         }
 
         case 'g': {
-            std::cin.getline(path, 100);
+            std::cin.getline(path, 200);
             if (!node->empty()) {
 
-                std::cout << "————————————————————————————————————————————" << std::endl;
+                line;
                 std::weak_ptr<Figure> temp = node->getItem(path);
                 temp.lock()->Print();
                 std::cout << "\tSquare = " << temp.lock()->Square() << std::endl;
@@ -66,7 +66,7 @@ int main()
         default:
             continue;
         }
-        std::cout << "————————————————————————————————————————————" << std::endl;
+        line;
         if (node && !node->empty())
             std::cout << *node;
         else

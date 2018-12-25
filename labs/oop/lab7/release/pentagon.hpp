@@ -2,7 +2,7 @@
 #define	PENTAGON_H
 #include <cstdlib>
 #include <iostream>
-#include "figure.hpp"
+#include "Figure.hpp"
 
 class Pentagon : public Figure {
 public:
