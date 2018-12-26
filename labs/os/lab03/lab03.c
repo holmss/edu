@@ -66,7 +66,7 @@ void* Search(void* arg)
             }
             if (args->g.adj_matrix[args->curr][i]) {
                 params[i].curr = i;
-                status = pthread_create(&threads[i], NULL, Search, params + i);
+                status = pthread_create(&threads[i], NULL, Search, &params[i]);
                 if (status != 0) {
                     printf("pthread_create error\n");
                     exit(ERROR_JOIN_THREAD);
@@ -79,6 +79,7 @@ end:
     for (int i = 0; i < args->g.el_num; ++i) {
         if (threads[i]) {
             status = pthread_detach(threads[i]);
+
             if (status != 0) {
                 printf("pthread_join error\n");
                 exit(ERROR_JOIN_THREAD);
@@ -206,11 +207,12 @@ int main()
     //     exit(ERROR_JOIN_THREAD);
     // }
     // }
-
+    pthread_mutex_lock(&lock);
     if (cycle == 0)
         printf("There are no cycles in that graph\n");
     else
         printf("There is a cycle\n");
+    pthread_mutex_unlock(&lock);
 
     for (i = 0; i < graph.el_num; i++) {
         free(graph.adj_matrix[i]);
