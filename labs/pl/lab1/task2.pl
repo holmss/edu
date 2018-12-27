@@ -14,58 +14,78 @@ sum([H|Lst], Res) :-
 middle_grade_sum(Stud, Sum, Pass) :-
     student(_, Stud, Lst),
     sum(Lst, Summ),
-    (   member(grade(_,2), Lst),
+    (   member(grade(_, 2), Lst),
         Pass=no
     ;   Pass=yes
     ),
     length(Lst, Len),
-    Sum is Summ/Len.
+    Sum is Summ/Len,!.
 
 middle :-
     findall(Stud, student(_, Stud, _), Lst),
-    middle(Lst).
+    middle(Lst), !.
 middle([]).  
-middle([H|List]):-
-    middle_grade_sum(H,Sum,Pass),
-    write(Sum),write(" это средняя оценка "),write(H),write(". Сдал: "),writeln(Pass),
+middle([H|List]) :-
+    middle_grade_sum(H, Sum, Pass),
+    write(Sum),
+    write(" это средняя оценка "),
+    write(H),
+    write(". Сдал: "),
+    writeln(Pass),
     middle(List).
 
 %2. Для каждого предмета, найти количество не сдавших студентов
-
 getsubs :-
-    setof(Sub, (student(_, _, Elem), member(grade(Sub, _), Elem)), Result),
-    pass(Result).
+    findall(Sub,
+            ( student(_, _, Elem),
+              member(grade(Sub, _), Elem)
+            ),
+            Result),
+    setof(Elem, member(Elem, Result), X),
+    pass(X), !.
 
 pass([]).
-pass([Sub|Subjects]):-
+pass([Sub|Subjects]) :-
     pass(Subjects),
-    findall(Name,(student(_,Name,Elem),member(grade(Sub,2),Elem)), Lst),
+    findall(Name,
+            ( student(_, Name, Elem),
+              member(grade(Sub, 2), Elem)
+            ),
+            Lst),
     length(Lst, Len),
-    write(Len), write(" <- кол-во студентов, не сдавших "), writeln(Sub).
+    write(Len),
+    write(" <- кол-во студентов, не сдавших "),
+    writeln(Sub).
 
 %3. Для каждой группы, найти студента (студентов) с максимальным средним баллом
-
-sum([], 0).
-sum([H|Lst], Res) :-
+summ([], 0).
+summ([H|Lst], Res) :-
     H=grade(_, Num),
-    sum(Lst, Res2),
+    summ(Lst, Res2),
     Res is Num+Res2.
 
 middle_grade_sum(Stud, Sum) :-
     student(_, Stud, Lst),
-    sum(Lst, Summ),
+    summ(Lst, Summ),
     length(Lst, Len),
     Sum is Summ/Len.
 
-middle_grade_group_list(Group, [Student|Students], [MGGL|Grades]) :-
-    middle_grade_sum(Student, MGGL),
-    append(MGGL, Grades, Fin),
-    middle_grade_group_list(Group, Students, Grades),
-    write(Fin).
-    
+max([S], [G], S, G).
+max([S|Students], [G|Grades], Res, Prev) :-
+    max(Students, Grades, Ress, PPrev),
+    (   G>PPrev,
+        Res=S,
+        Prev=G,!
+    ;   Res=Ress,
+        Prev=PPrev
+    ).
 
-max([], 0).
-max([H|Tail], M) :-
-    max(Tail, N),
-    (N > H -> M is N; M is H).
 
+max_middle_grade(Group, Res) :-
+    findall(St, student(Group, St, _), Students),
+    findall(Grade,
+            ( member(Stud, Students),
+              middle_grade_sum(Stud, Grade, _)
+            ),
+            Grades),
+    max(Students, Grades, Res, _).
