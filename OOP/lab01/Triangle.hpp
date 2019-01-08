@@ -1,36 +1,31 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include <cstdlib>
-#include <iostream>
 #include "Figure.hpp"
-class Triangle : Figure
-{
+#include <iostream>
+
+class Triangle : public Figure {
 public:
-  Triangle();
-  Triangle(size_t i, size_t j, size_t k);
-  Triangle(const Triangle &orig);
-  Triangle(std::istream &is);
-
-  double Square();
-  void Print();
-
-  friend std::ostream &operator<<(std::ostream &os, const Triangle &obj);
-  friend std::istream &operator>>(std::istream &is, Triangle &obj);
-
-  Triangle &operator++();
-  friend Triangle operator+(const Triangle &left, const Triangle &right);
-
-  Triangle &operator=(const Triangle &right);
-  friend bool operator==(const Triangle &left, const Triangle &right);
-  friend bool operator!=(const Triangle &left, const Triangle &right);
-
-  virtual ~Triangle();
+    Triangle();
+    explicit Triangle(std::istream& is);
+    Triangle(size_t i, size_t j, size_t k);
+    Triangle(const Triangle& orig);
+    friend Triangle operator+(const Triangle& left, const Triangle& right);
+    bool operator==(Triangle& right);
+    bool operator!=(Triangle& right);
+    Triangle& operator=(Triangle& right);
+    friend std::ostream& operator<<(std::ostream& os, const Triangle& obj);
+    friend std::istream& operator>>(std::istream& is, Triangle& obj);
+    // friend Triangle& operator==(Triangle& lft, Triangle& rig);
+    // friend Triangle& operator!=(Triangle& lft, Triangle& rig);
+    double Square() override;
+    void Print() override;
+    ~Triangle() override;
 
 private:
-  size_t side_a;
-  size_t side_b;
-  size_t side_c;
+    size_t sideA;
+    size_t sideB;
+    size_t sideC;
 };
 
-#endif /* TRIANGLE_H */
+#endif // !TRIANGLE_H

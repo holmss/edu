@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "Triangle.hpp"
 #include "TTree.hpp"
+// #include "Triangle.hpp"
 
 int main()
 {
@@ -17,25 +17,19 @@ int main()
               << "\t\t path={r,l}*\n\n";
 
     std::cout << "command>> ";
-    while (std::cin.get(inp))
-    {
+    while (std::cin.get(inp)) {
 
         if (inp == '\n')
             continue;
-        if (inp == '+')
-        {
-            node.add(Triangle(std::cin));
-        }
-        else if (inp == '-')
-        {
+        if (inp == '+') {
+            node.add(std::make_shared<Triangle>(new Triangle(std::cin)));
+        } else if (inp == '-') {
             std::cin >> path;
             node.Remove(node.get(path));
-        }
-        else if (inp == 'g')
-        {
+        } else if (inp == 'g') {
             std::cin >> path;
             std::cout << "————————————————————————————————————————————" << std::endl;
-            std::cout << node.getItem(path) << "\tSquare = " << node.getItem(path).Square() << std::endl;
+            std::cout << node.getItem(path) << "\tSquare = " << node.getItem(path)->Square() << std::endl;
             std::cout << "————————————————————————————————————————————" << std::endl;
 
             continue;

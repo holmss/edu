@@ -5,13 +5,13 @@ HDR    := $(wildcard *.hpp *.h)
 CXX    := g++
 CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -Wno-long-long -g3\
           -Weffc++ -Wctor-dtor-privacy -Wnon-virtual-dtor -Wold-style-cast -Winit-self\
-          -Wconversion -Wsign-conversion -Wunreachable-code #-fsanitize=address 
+          -Wconversion -Wsign-conversion -Wunreachable-code #-fprofile-arcs -ftest-coverage #-fsanitize=address 
 
 
 all: $(TARGET)
 
 clean:
-	rm -f $(TARGET) *.o *.gc*
+	rm -f $(TARGET) $(SRC:%.cpp=%.o)
 
 main.o: main.cpp $(HDR)
 	$(CXX) $(CFLAGS) -c main.cpp
