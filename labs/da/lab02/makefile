@@ -3,7 +3,8 @@ TARGET := lab02
 SRC    := $(wildcard *.cpp)
 HDR    := $(wildcard *.hpp)
 CXX    := g++
-CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -Wno-long-long -g3 -lm -fprofile-arcs -ftest-coverage
+CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -O3 -Wno-long-long -g3 -lm
+#-fprofile-arcs -ftest-coverage
 
 all: $(TARGET)
 
@@ -12,6 +13,7 @@ clean:
 
 $(TARGET): $(SRC:%.cpp=%.o)
 	$(CXX) $(CFLAGS) -o $@ $^
+#``       	rm -rf *.o
 
 lab02.o: lab02.cpp $(HDR) 
 	$(CXX) $(CFLAGS) -c lab02.cpp
