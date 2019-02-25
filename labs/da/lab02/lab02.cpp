@@ -1,5 +1,5 @@
-// #include <cctype>
-
+//#include <cctype>
+#include <stdio.h>
 #include "rbt.hpp"
 
 int main()
@@ -11,11 +11,12 @@ int main()
     char rdn;
     ull key;
 
-    while (std::cin >> rdn) {
+    while (std::cin >> rdn) { //stdinp std::cin >> rdn;
         TNode* temp = new TNode;
         switch (rdn) {
         case '+':
-            std::cin >> buffer >> key;
+	    scanf("%s%llu", buffer, &key); //stdinp
+            //std::cin >> buffer >> key;
 
             for (int i = 0; i < strlen(buffer); i++) {
                 buffer[i] = tolower(buffer[i]);
@@ -27,16 +28,19 @@ int main()
 
             if (!tree.Search(buffer)) {
                 tree.Insert(*temp);
-                std::cout << "OK\n";
+                printf("OK\n"); //stdin
+	       	//std::cout << "OK\n";
             } else {
                 delete temp;
-                std::cout << "Exist\n";
+		printf("Exist\n"); //stdin
+                //std::cout << "Exist\n";
             }
 
             break;
 
         case '-':
-            std::cin >> buffer;
+	    scanf("%s", buffer); //stdin
+            //std::cin >> buffer;
 
             for (int i = 0; i < strlen(buffer); i++) {
                 buffer[i] = tolower(buffer[i]);
@@ -44,22 +48,27 @@ int main()
 
             if (tree.Search(buffer)) {
                 tree.RBDelete(tree.Search(buffer));
-                std::cout << "OK\n";
+                printf("OK\n"); //stdin
+		//std::cout << "OK\n";
             } else {
-                std::cout << "NoSuchWord\n";
+                printf("NoSuchWord\n"); //stdin
+		//std::cout << "NoSuchWord\n";
             }
 
             break;
 
         case '!':
 
-            std::cin >> buffer;
+            scanf("%s", buffer); //stdin
+	    //std::cin >> buffer;
 
             if (*buffer == 'S') {
-                std::cin >> buffer;
+                scanf("%s", buffer); //stdin
+		//std::cin >> buffer;
                 tree.Save(buffer);
             } else if (*buffer == 'L') {
-                std::cin >> buffer;
+                scanf("%s", buffer); //stdin
+		//std::cin >> buffer;
                 tree.Load(buffer);
             }
 
@@ -67,7 +76,8 @@ int main()
 
         default:
             std::cin.putback(rdn);
-            std::cin >> buffer;
+            scanf("%s", buffer); //stdin
+	    //std::cin >> buffer;
 
             for (int i = 0; i < strlen(buffer); i++) {
                 buffer[i] = tolower(buffer[i]);
@@ -75,9 +85,11 @@ int main()
 
             TNode* tmp = tree.Search(buffer);
             if (tmp) {
-                std::cout << "OK: " << tmp->key << '\n';
+                printf("OK: %lld\n", tmp->key); //stdin
+		//std::cout << "OK: " << tmp->key << '\n';
             } else
-                std::cout << "NoSuchWord\n";
+                printf("NoSuchWord\n"); //stdin
+		//std::cout << "NoSuchWord\n";
 
             break;
         }
