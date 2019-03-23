@@ -4,6 +4,8 @@
 
 int main()
 {
+    std::cin.tie(0);
+    std::ios::sync_with_stdio(false);
     Trbt tree;
     // return 0;
     const int size = 257;

@@ -42,19 +42,8 @@ TNode::~TNode()
         delete[] word;
 
     prev = nullptr;
-    // if (left == right)
-    //     left = nullptr;
-    // if (left == this)
-    //     left = nullptr;
-    // if (right == this)
-    //     right = nullptr;
-    // if (left)
-    //     delete left;
-    // if (right)
-    //     delete right;
     left = nullptr;
     right = nullptr;
-    //word = nullptr;
 }
 
 //вставка элемента
