@@ -10,7 +10,7 @@ int main()
     char path[100];
 
     std::cout << "Usage:\n"
-              << "\t Add element:   \t + side_a side_b side_c\n"
+              << "\t Add element:   \t + type side"
               << "\t Delete element:\t - path \n"
               << "\t\t path={r,l}*\n"
               << "\t Get element:   \t g path\n"
